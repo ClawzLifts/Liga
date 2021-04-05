@@ -1,0 +1,27 @@
+001-01-Joselu-4-1
+002-01-Lucas Perez-6-0
+003-01-Deyverson-5-0
+004-01-Facundo Pellistri-7-0
+005-01-Guidetti-1,2-0
+006-01-Rioja-2-0
+007-01-Battaglia-4-0
+008-01-Tomás Pina-1,2-0
+009-01-Edgar Méndez-2-0
+010-01-Jota Peleteiro-2-0
+011-01-Pere Pons-2,8-0
+012-01-Borja Sainz-2,5-0
+013-01-Manu García-0,8-0
+014-01-Córdoba-2,5-0
+015-01-Abdallahi Mahmoud-0,1-0
+016-01-Burgui-0,8-0
+017-01-Sergi García-0,1-0
+018-01-Rubén Duarte-4,5-0
+019-01-Ximo Navarro-2-0
+020-01-Lejeune-4,2-0
+021-01-Laguardia-5-0
+022-01-Aguirregabiria-3-0
+023-01-Tachi-0,8-0
+024-01-Rodrigo Ely-2,5-0
+025-01-Javi López-0,6-0
+026-01-Pacheco-14-0
+027-01-Sivera-0,9-0
