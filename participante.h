@@ -41,7 +41,6 @@ typedef struct equipo
 {
     char idEquipo[2];
     char nombreEquipo[20];
-    int libre;
 }equipo;
 
 

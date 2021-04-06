@@ -5,6 +5,10 @@
 
 
 
+int main(){
+
+}
+
 
 void init(){
 
@@ -125,7 +129,6 @@ void stringSplit(char* string, char* fields[]) {
 
 
 futbolista  createStructJugadores(char* array[]){
-
     futbolista newStruct;
 
     strcpy(newStruct.idFutbolista,array[0]),
@@ -145,24 +148,36 @@ usuario createStructUsuarios(char* array[]) {
     strcpy(newStruct.nombre, array[1]),
     strcpy(newStruct.perfil, array[2]),
     strcpy(newStruct.usuario,array[3]),
-    strcpy(newStruct.password, array[4]),
+    strcpy(newStruct.password, array[4]);
 
     return newStruct;
 }
 
 config createStructConfig(char* array[]) {
-    config result;
-    return result;
+    config newStruct;
+
+    strcpy(newStruct.data, array[0]),
+    newStruct.value = atoi(array[1]);
+
+    return newStruct;
 }
 
 futPlantilla createStructFutP(char* array[]) {
-    futPlantilla result;
-    return result;
+    futPlantilla newStruct;
+
+    strcpy(newStruct.idFutbolista,array[0]),
+    strcpy(newStruct.idPlantilla,array[1]);
+
+    return newStruct;
 }
 
 equipo createStructEquipos(char* array[]) {
-    equipo result;
-    return result;
+    equipo newStruct;
+
+    strcpy(newStruct.idEquipo, array[0]),
+    strcpy(newStruct.nombreEquipo, array[1]);
+
+    return newStruct;
 }
 
 
