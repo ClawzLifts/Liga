@@ -157,8 +157,8 @@ void loadUsuario(usuario **dynArray, int * n) {
         do {
             fgets(buffer, 35, file);
             stringSplit(buffer, fields);
-            if (*n%50==0){
-                *dynArray=realloc((usuario *)(*dynArray), (*n+50)*sizeof(usuario));
+            if (*n%10==0){
+                *dynArray=realloc((usuario *)(*dynArray), (*n+10)*sizeof(usuario));
             }
             (*dynArray)[*n]=createStructUsuarios(fields);
             (*n)++;

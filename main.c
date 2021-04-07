@@ -8,16 +8,23 @@
 
 int main() {
 
- futbolista *arrayFutbolista = (futbolista*)malloc(50* sizeof(futbolista));
+    config *arrayConfig = (config*)malloc(50* sizeof(config));
+    usuario *arrayUsuario = (usuario*)malloc(10* sizeof(usuario));
+    futbolista *arrayFutbolista = (futbolista*)malloc(50* sizeof(futbolista));
+    equipo *arrayEquipo = (equipo*)malloc(50* sizeof(equipo));
+    futPlantilla *arrayFutP = (futPlantilla*)malloc(50*sizeof(futPlantilla));
 
-    if (arrayFutbolista != NULL){
+    int nConfig, nUsuario, nFutbolista, nEquipo, nFutP;
 
-        int n;
-        loadFutbolistas(&arrayFutbolista,&n);
 
-    }
-    else
-        exit(1);
+
+    loadConfig(&arrayConfig, &nConfig);
+    loadUsuario(&arrayUsuario, &nUsuario);
+    loadFutbolistas(&arrayFutbolista, &nFutbolista);
+    loadEquipos(&arrayEquipo, &nEquipo);
+    loadFutPlantillas(&arrayFutP, &nFutP);
+
+
     return 0;
 }
 
