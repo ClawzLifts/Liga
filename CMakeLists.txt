@@ -7,8 +7,6 @@ include_directories(.)
 
 add_executable(Liga
         DATA/Futbolistas.txt
-        load.c
-        load.h
         participante.c
         participante.h
-        )
+        main.c loader.c loader.h estructuras.h)
