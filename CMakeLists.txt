@@ -9,4 +9,4 @@ add_executable(Liga
         DATA/Futbolistas.txt
         participante.c
         participante.h
-        main.c loader.c loader.h estructuras.h)
+        main.c loader.c loader.h estructuras.h login.c login.h)
