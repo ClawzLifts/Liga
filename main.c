@@ -28,6 +28,10 @@ int main() {
     loadPlantillas(&arrayPlantilla, &nPlantilla);
 
 
+
+
+
+
     menuParticipante("test", "test", &arrayConfig, &arrayFutbolista, &arrayEquipo, &arrayPlantilla, &arrayFutP,
                      &nPlantilla, &nFutbolista, &nEquipo, &nFutP);
 

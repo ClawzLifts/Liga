@@ -42,7 +42,6 @@ void loadFutPlantillas(futPlantilla **dynArray, int* n ) {
 
         } while (!feof(file));
 
-        free(dynArray);
         fclose(file);
     }
 
@@ -73,7 +72,6 @@ void loadConfig(config **dynArray, int *n) {
 
         } while (!feof(file));
 
-        free(dynArray);
         fclose(file);
     }
 
@@ -105,7 +103,6 @@ void loadFutbolistas(futbolista **dynArray, int * n) {
         } while (!feof(file));
 
         fclose(file);
-        free(*dynArray);
 
     }
 
@@ -137,7 +134,6 @@ void loadEquipos(equipo **dynArray, int * n) {
         } while (!feof(file));
 
         fclose(file);
-        free(dynArray);
     }
 
 }
@@ -167,7 +163,6 @@ void loadUsuario(usuario **dynArray, int * n) {
         } while (!feof(file));
 
         fclose(file);
-        free(dynArray);
     }
 
 }
@@ -197,7 +192,6 @@ void loadPlantilla(plantilla **dynArray, int * n) {
         } while (!feof(file));
 
         fclose(file);
-        free(dynArray);
     }
 
 }
