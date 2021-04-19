@@ -13,5 +13,4 @@ add_executable(Liga
         loader.c
         loader.h
         estructuras.h
-        login.c
-        login.h)
+        )

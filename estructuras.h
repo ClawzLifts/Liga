@@ -15,8 +15,8 @@ typedef struct plantilla{
 
 
 typedef struct jugPlantilla {
-    char idFutbolista[2];
-    char idPlantilla[3];
+    char idFutbolista[3];
+    char idPlantilla[4];
 }futPlantilla;
 
 

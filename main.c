@@ -2,6 +2,7 @@
 // Created by Clawz on 06/04/2021.
 //
 
+#include "estructuras.h"
 #include "loader.h"
 #include "participante.h"
 #include <stdio.h>
