@@ -20,13 +20,14 @@ int main() {
     int nConfig, nUsuario, nFutbolista, nEquipo, nFutP, nPlantilla;
 
 
-
     loadConfig(&arrayConfig, &nConfig);
     loadUsuario(&arrayUsuario, &nUsuario);
     loadFutbolistas(&arrayFutbolista, &nFutbolista);
     loadEquipos(&arrayEquipo, &nEquipo);
     loadFutPlantillas(&arrayFutP, &nFutP);
-    loadPlantillas(&arrayPlantilla, &nPlantilla);
+    loadPlantilla(&arrayPlantilla, &nPlantilla);
+
+
 
 
 

@@ -65,7 +65,7 @@ void loadConfig(config **dynArray, int *n) {
             fgets(buffer, 35, file);
             stringSplit(buffer, fields);
             if (*n%50==0){
-                *dynArray=realloc((config*)(*dynArray), (*n+10)*sizeof(config));
+                *dynArray =realloc((config*)(*dynArray), (*n+10)*sizeof(config));
             }
             (*dynArray)[*n]=createStructConfig(fields);
             (*n)++;
@@ -141,7 +141,7 @@ void loadEquipos(equipo **dynArray, int * n) {
 
 void loadUsuario(usuario **dynArray, int * n) {
     FILE *file;
-    file = fopen("DATA/Configuracion.txt", "r");
+    file = fopen("DATA/Usuarios.txt", "r");
     char buffer[35];
     char *fields[5];
 
@@ -254,7 +254,7 @@ usuario createStructUsuarios(char* array[]) {
 config createStructConfig(char* array[]) {
     config newStruct;
 
-    strcpy(newStruct.data, array[0]),
+    strcpy(newStruct.data, array[0]);
     newStruct.value = atoi(array[1]);
 
     return newStruct;

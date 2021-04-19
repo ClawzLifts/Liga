@@ -15,7 +15,7 @@ void loadFutbolistas(futbolista**, int*);
 void loadEquipos(equipo**, int*);
 void loadUsuario(usuario**, int*);
 void loadFutPlantillas(futPlantilla**, int*);
-void loadPlantillas(plantilla**, int*);
+void loadPlantilla(plantilla**, int*);
 
 void stringSplit(char* , char*[]);
 
