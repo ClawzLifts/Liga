@@ -4,8 +4,12 @@
 #include <string.h>
 #include <math.h>
 
-#include "Admin.h"
 #include "Cronista.h"
+#include "Admin.h"
+#include "loader.h"
+#include "participante.h"
+
+
 
 //#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#
 //      DECLARACIÓN DE FUNCIONES
@@ -15,10 +19,10 @@
 //        MENÚS
 //=-=-=-=-=-=-=-=-=-=-=
 
-void m_equipo(int*, int*, equipos**, jugadores**, config**);
-void m_usuario(int, int*, usuario**);
+void m_equipo(int*, int*, int, equipo**, futbolista**, futPlantilla**, config**);
+void m_usuario(int, int*, int*, int*, int*, int*, int, equipo**, futbolista**, usuario**, plantilla**, futPlantilla**, config**);
 void m_config(int, config**);
-void m_admin(int, int*, int*, int*, int*, int, equipos**, jugadores**, usuario**, config**);
+void m_admin(int, int*, int*, int*, int*, int*, int, equipo**, futbolista**, usuario**, plantilla**, futPlantilla**, config**);
 
 //=-=-=-=-=-=--=-=-=-=-=-=
 //  FUNCIONES OPERATIVAS
@@ -28,8 +32,8 @@ void m_admin(int, int*, int*, int*, int*, int, equipos**, jugadores**, usuario**
 //   FUNCIÓN LISTAR
 //--------------------
 
-void listar_eq(int, equipos**);
-void listar_jug(int, equipos**, jugadores**);
+void listar_eq(int, equipo**);
+void listar_jug(int, int, equipo**, futbolista**);
 void listar_us(int, usuario**);
 void listar_con(int, config**);
 
@@ -37,25 +41,25 @@ void listar_con(int, config**);
 //    FUNCIÓN MOD
 //-------------------
 
-void mod_eq(int*, int, equipos**, jugadores**);
-void mod_jug(int, int*, equipos**, jugadores**, config**);
-void mod_us(int, usuario**);
+void mod_eq(int*, int, int, equipo**, futbolista**, futPlantilla**);
+void mod_jug(int, int*, int, equipo**, futbolista**, futPlantilla**, config**);
+void mod_us(int, int, usuario**);
 void mod_con(int, config**);
 
 //------------------------
 //    FUNCIÓN ELIMINAR
 //------------------------
 
-void eliminar_eq(int, int, equipos**, jugadores**);
-void eliminar_jug(int, equipos**, jugadores**);
-void eliminar_us(int, int, usuario**);
+void eliminar_eq(int, int, int, equipo**, futbolista**, futPlantilla**);
+void eliminar_jug(int, int, int n_fpl, equipo**, futbolista**, futPlantilla**);
+void eliminar_us(int, int, int, int, usuario**, plantilla**, futPlantilla**);
 
 //----------------------
 //    FUNCIÓN AÑADIR
 //----------------------
 
-void anadir_eq(int*, equipos**);
-void anadir_jug(int, int*, equipos**, jugadores**, config**);
+void anadir_eq(int*, equipo**);
+void anadir_jug(int, int*, equipo**, futbolista**, config**);
 void anadir_us(char, int*, usuario**);
 
 //-------------
@@ -66,7 +70,7 @@ void gettot(char*, int*, config**);
 int textest(char*);
 int intest(char*);
 int toint(char*);
-void tostring(int, char*);
+void tostring(int, int, char*);
 int pot(int, int);
 
 //#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#
@@ -77,17 +81,24 @@ int pot(int, int);
 //        MENÚS
 //=-=-=-=-=-=-=-=-=-=-=
 
-//Cabecera: void m_equipo(int* n_eq, int* n_jug, equipos *eq, jugadores *jug, config* con)
-//Precondición: n_eq y n_jug son el tamaño de los respectivos vectores de registros eq y jug, correspondientes a los equipos y jugadores.
-//              con es el vector de registros de configuración.
-//Postcondición: Muestra la interfaz de gestión de equipos. Permite Listar los equipos y modificar, crear o eliminar jugadores.
 
-void m_equipo(int* n_eq, int* n_jug, equipos** eq, jugadores** jug, config** con)
+//Cabecera: void m_equipo(int* n_eq, int* n_jug, int n_fpl, equipo** eq, futbolista** jug, futPlantilla** fpl, config** con)
+//Precondición: n_eq, n_jug y n_fpl son el tamaño de los respectivos vectores de registros eq, jug y fpl, correspondientes a los equipos, jugadores y la relación
+//              entre futbolistas y las plantillas. con es el vector de registros de configuración.
+//Postcondición: Muestra la interfaz de gestión de equipos. Permite Listar los equipos y modificar, crear o eliminar jugadores.
+void m_equipo(int* n_eq, int* n_jug, int n_fpl, equipo** eq, futbolista** jug, futPlantilla** fpl, config** con)
 {
-    int n;
+    int n = 1;
+
+    system("cls");
 
     do
     {
+        if(n < 1 || n > 5)
+        {
+            system("pause");
+            system("cls");
+        }
         printf("\n\n  Gestion de equipos\n ====================\n\n 1.-Listar equipos\n 2.-Modificar equipos\n\n 3.-Listar jugadores\n"
                " 4.-Modificar jugadores\n\n 5.-Volver\n");
 
@@ -101,34 +112,47 @@ void m_equipo(int* n_eq, int* n_jug, equipos** eq, jugadores** jug, config** con
             listar_eq(*n_eq, eq);
             break;
         case 2:
-            mod_eq(n_eq, *n_jug, eq, jug);
+            mod_eq(n_eq, *n_jug, n_fpl, eq, jug, fpl);
             break;
         case 3:
-            listar_jug(*n_jug, eq, jug);
+            listar_jug(*n_eq, *n_jug, eq, jug);
             break;
         case 4:
-            mod_jug(*n_eq, n_jug, eq, jug, con);
+            mod_jug(*n_eq, n_jug, n_fpl, eq, jug, fpl, con);
         case 5:
             break;                  //VOLVER AL MENÚ PRINCIPAL
         default:
             printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
         }
     } while(n !=5);
+    system("cls");
 }
 
-//Cabecera: void m_usuario(int* n_us, usuario* us)
-//Precondición: n_us es el tamaño del vector de registros us, correspondientes a los usuarios.
+//Cabecera: void m_usuario(int idp, int* n_eq, int* n_jug, int* n_us, int* n_pl, int* n_fpl, int n_con, equipo** eq, futbolista** jug, usuario** us,
+//                          plantilla** pl, futPlantilla** fpl, config** con)
+//Precondición: idp es la id del usuario actual. n_eq, n_juf, n_us, n_pl, n_fpl y n_con son los tamaños de sus respectivos vectores de registros.
+//              eq, jug, us, pl, fpl y con los vectores de registros.
 //Postcondición: Muestra la interfaz de gestión de usuarios. Permite listar, modificar, crear y eliminar usuarios.
 
-void m_usuario(int idp, int* n_us, usuario** us)
+void m_usuario(int idp, int* n_eq, int* n_jug, int* n_us, int* n_pl, int* n_fpl, int n_con, equipo** eq, futbolista** jug, usuario** us,
+               plantilla** pl, futPlantilla** fpl, config** con)
 {
-    int n;
+    int n = 1, id = 0;
+    char s[6];
     char c = 'u';           //IDENTIFICADOR DE LA FUNCIÓN
+
+    system("cls");
 
     do
     {
+        if(n < 1 || n > 5)
+        {
+            system("pause");
+            system("cls");
+        }
+
         printf("\n\n  Gestion de usuarios\n =====================\n"
-               "\n 1.-Listar usuarios\n 2.-Modificar usuarios\n\n 3.-Mostrar plantillas\n 4.-Modificar plantillas\n\n 5.-Volver\n");
+               "\n 1.-Listar usuarios\n 2.-Modificar usuarios\n\n 3.-Gestion de plantillas\n\n 4.-Volver\n");
 
         printf("\n Seleccion: ");
         scanf("%d",&n);
@@ -140,8 +164,15 @@ void m_usuario(int idp, int* n_us, usuario** us)
             listar_us(*n_us, us);
             break;
         case 2:
+            system("cls");
+            id = 0;
             do
             {
+                if(n < 1 || n > 4)
+                {
+                    system("pause");
+                    system("cls");
+                }
                 printf("\n\n  Modificacion de usuarios\n ==========================\n"
                        "\n 1.-Modificar cuentas\n 2.-A%cadir usuario\n 3.-Eliminar usuario\n\n 4.-Volver\n", 164);
 
@@ -152,13 +183,13 @@ void m_usuario(int idp, int* n_us, usuario** us)
                 switch(n)
                 {
                 case 1:
-                    mod_us(*n_us, us);
+                    mod_us(idp, *n_us, us);
                     break;
                 case 2:
                     anadir_us(c, n_us, us);
                     break;
                 case 3:
-                    eliminar_us(idp, *n_us, us);
+                    eliminar_us(idp, *n_us, *n_pl, *n_fpl, us, pl, fpl);
                     break;
                 case 4:
                     break;
@@ -166,56 +197,89 @@ void m_usuario(int idp, int* n_us, usuario** us)
                     printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
                 }
             } while(n != 4);
+            system("cls");
             break;
         case 3:
-            //listar plantillas
-            break;
-        case 4:
+            system("cls");
+
             do
             {
-                printf("\n\n  Modificacion de plantillas\n ============================\n"
-                       "\n 1.-Modificar plantillas\n 2.-A%cadir plantilla\n 3.-Eliminar plantilla\n\n 4.-Volver\n", 164);
-
-                printf("\n Seleccion: ");
-                scanf("%d",&n);
+                if(n < 1 || n > 3)
+                {
+                    system("pause");
+                    system("cls");
+                }
+                printf("\n Introduzca:\n 1.-Identificador de Usuario\n 2.-Nombre de cuenta\n\n 3.-Volver\n\n Seleccion: ");
+                scanf("%d", &n);
                 fflush(stdin);
 
+                id = 0;
                 switch(n)
                 {
                 case 1:
-                    //modificar plantillas
+                    system("cls");
+                    printf("\n Introduzca identificador: ");
+                    gets(s);
+                    fflush(stdin);
+                    strtok(s, "\n");
+                    while(id >= 0 && id < *n_us && strcmp(s, (*us)[id].idUser) != 0 && strcmp((*us)[id].perfil, "Participante") != 0)
+                        id++;
                     break;
                 case 2:
-                    //añadir plantilla
+                    system("cls");
+                    printf("\n Introduzca nombre de cuenta: ");
+                    fgets(s, 6, stdin);
+                    fflush(stdin);
+                    strtok(s, "\n");
+                    while(id >= 0 && id < *n_us && strcmp(s, (*us)[id].usuario) != 0 && strcmp((*us)[id].perfil, "Participante") != 0)
+                        id++;
                     break;
                 case 3:
-                    //eliminar plantilla
-                    break;
-                case 4:
                     break;
                 default:
                     printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
                 }
-            } while(n != 4);
+            } while(n < 1 || n > 3);
+            system("cls");
+            if(n != 3)
+            {
+                if(id < 0 || id >= *n_us || strcmp((*us)[id].nombre, "\0") == 0 || strcmp((*us)[id].nombre, " ") == 0 || strcmp((*us)[id].perfil, "Participante") != 0)
+                {
+                    printf("\n\n=======================================================\n ERROR - USUARIO NO ENCONTRADO O NO ES UN PARTICIPANTE\n"
+                           "=======================================================\n");
+                    system("pause");
+                } else
+                    menuParticipante((*us)[id].idUser, (*us)[id].nombre, con, jug, eq, pl, fpl, n_pl, n_jug, n_eq, n_fpl);
+            }
+            system("cls");
             break;
-        case 5:
+        case 4:
             break;          //VOLVER AL MENÚ PRINCIPAL
         default:
             printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
         }
-    } while(n != 5);
+    }
+    while(n != 4);
+    system("cls");
 }
 
-//Cabecera: void m_config(int n_con, config* con)
+//Cabecera: void m_config(int n_con, config** con)
 //Precondición: n_con es el tamaño del vector de registros con, correspondiente a la configuración.
 //Postcondición: Muestra la interfaz de configuración de la aplicación. Permite ver y modificar la configuración.
 
 void m_config(int n_con, config** con)
 {
-    int n;
+    int n = 1;
+
+    system("cls");
 
     do
     {
+        if(n < 1 || n > 3)
+        {
+            system("pause");
+            system("cls");
+        }
         printf("\n\n  Configuracion\n ================\n"
                "\n 1.-Ver configuracion actual\n 2.-Modificar configuracion\n\n 3.-Volver\n");
 
@@ -237,24 +301,34 @@ void m_config(int n_con, config** con)
             printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
         }
     } while(n != 3);
+    system("cls");
 }
 
-//Cabecera: void m_admin(int* n_eq, int* n_jug, int* n_us, int* n_pl, int n_con, equipos *eq, jugadores *jug, usuario *us, config *con)
-//Precondición:
+//Cabecera: void m_admin(int idp, int* n_eq, int* n_jug, int* n_us, int* n_pl, int* n_fpl, int n_con, equipo** eq, futbolista** jug, usuario** us,         //INICIO DE ADMIN
+//                       plantilla** pl, futPlantilla** fpl, config** con))
+//Precondición: idp es la id del usuario actual. n_eq, n_juf, n_us, n_pl, n_fpl y n_con son los tamaños de sus respectivos vectores de registros.
+//              eq, jug, us, pl, fpl y con los vectores de registros.
 //Postcondición: Muestra las opciones de trabajo del administrador. Permite "desplazarse" a los submenús de gestión de equipos, usuarios y configuración.
 
-void m_admin(int idp, int* n_eq, int* n_jug, int* n_us, int* n_pl, int n_con, equipos** eq, jugadores** jug, usuario** us, config** con)        //INICIO DE ADMIN
+void m_admin(int idp, int* n_eq, int* n_jug, int* n_us, int* n_pl, int* n_fpl, int n_con, equipo** eq, futbolista** jug, usuario** us,         //INICIO DE ADMIN
+             plantilla** pl, futPlantilla** fpl, config** con)
 {
     int n;
     n = n_con;
 
-    gettot("", &n, con);            //Inicializa el valor de tam dentro de la función
-    n = 0;
+    system("cls");
 
-    printf("\n Bienvenido\n");
+    gettot("", &n, con);            //Inicializa el valor de tam dentro de la función
+    n = 1;
+
+    printf("\n Bienvenido %s\n", (*us)[idp].nombre);
     do
     {
-
+        if(n < 1 || n > 4)
+        {
+            system("pause");
+            system("cls");
+        }
         printf("\n\n Menu Administrador:\n ===================\n\n 1.-Equipos\n 2.-Usuario\n 3.-Configuracion\n\n 4.-Salir\n");
 
         printf("\n Seleccion: ");
@@ -264,17 +338,23 @@ void m_admin(int idp, int* n_eq, int* n_jug, int* n_us, int* n_pl, int n_con, eq
         switch(n)
         {
         case 1:
-            m_equipo(n_eq, n_jug, eq, jug, con);
+            m_equipo(n_eq, n_jug, *n_fpl, eq, jug, fpl, con);
             break;
         case 2:
-            m_usuario(idp, n_us, us);
+            m_usuario(idp, n_eq, n_jug, n_us, n_pl, n_fpl, n_con, eq, jug, us, pl, fpl, con);
             break;
         case 3:
             m_config(n_con, con);
             break;
-        case 4:
+        case 4:     //VOLVER A LOG-IN
+            system("cls");
             do
             {
+                if(n != 1 && n != 2 && n != 4)
+                {
+                    system("pause");
+                    system("cls");
+                }
                 printf("\n Seguro que quiere cerrar sesion?\n 1.-Si\n 2.-No\n\n Seleccion: ");
                 scanf("%d", &n);
                 fflush(stdin);
@@ -288,18 +368,21 @@ void m_admin(int idp, int* n_eq, int* n_jug, int* n_us, int* n_pl, int n_con, eq
                     break;
                 case 4:
                     n = 0;
+                    printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
                     break;
                 default:
                     printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
                 }
             }
             while(n != 1 && n != 2 && n != 4);
-            break;      //VOLVER A LOG-IN
+            system("cls");
+            break;
         default:
             printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
         }
     }
     while(n != 4);
+    system("cls");
 }
 
 //=-=-=-=-=-=--=-=-=-=-=-=
@@ -310,126 +393,171 @@ void m_admin(int idp, int* n_eq, int* n_jug, int* n_us, int* n_pl, int n_con, eq
 //   FUNCIÓN LISTAR
 //--------------------
 
-//Cabecera: void listar_eq(int n_eq, equipos* eq)
+//Cabecera: void listar_eq(int n_eq, equipo** eq)
 //Precondición: n_eq es el tamaño del vector de registros eq, correspondiente a los equipos.
 //Postcondición: Muestra listados todos los equipos
 
-void listar_eq(int n_eq, equipos** eq)
+void listar_eq(int n_eq, equipo** eq)
 {
-    int n = 0;
+    int n = 0, n0 = 0;
+
+    system("cls");
+
     printf("\n  Equipos:\n ><><><><><\n");
-    for(int i = 0; (i == 0 && n_eq == 0) || i < n_eq; i++)
+    for(int id = 0; id < pot(10, sizeof((*eq)[0].idEquipo) - 1); id++)
     {
-        if(n_eq != 0)
+        n0 = 0;
+        for(int i = 0; ((i == 0 && n_eq == 0) || i < n_eq) && n0 == 0; i++)
         {
-            if(strcmp((*eq)[i].id_equipo, "\0") != 0 && n_eq != 0)
+            if(n_eq != 0)
             {
-                printf("\n=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=\n");
-                printf("\n Equipo:\n =======\n ID: %s\n Nombre: %s\n", (*eq)[i].id_equipo, (*eq)[i].nombreEquipo);
-                n = 1;
+                if(toint((*eq)[i].idEquipo) == id && (*eq)[i].idEquipo[0] != '\0')
+                {
+                    printf("\n=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=\n");
+                    printf("\n Equipo:\n =======\n ID: %s\n Nombre: %s\n", (*eq)[i].idEquipo, (*eq)[i].nombreEquipo);
+                    n = 1;
+                    n0 = 1;
+                }
             }
         }
-        if((i == n_eq - 1 && n == 0) || n_eq == 0)
-            printf("\n================\n NO HAY EQUIPOS\n================\n");
     }
+    if(n == 0 || n_eq == 0)
+        printf("\n================\n NO HAY EQUIPOS\n================\n");
     printf("\n=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=\n");
 
     printf("\n");
     system("pause");
+    system("cls");
 }
 
-//Cabecera: void listar_jug(int n_jug, equipos* eq, jugadores* jug)
-//Precondición: n_jug es el tamaño del vector de registros jug, correspondiente a los jugadores. eq es el vector de registros de equipos.
+//Cabecera: void listar_jug(int n_eq, int n_jug, equipo** eq, futbolista** jug)
+//Precondición: n_eq y n_jug son el tamaño del vector de registros eq y jug, correspondiente a los equipos y jugadores.
 //Postcondición: Muestra listados todos los jugadores.
 
-void listar_jug(int n_jug, equipos** eq, jugadores** jug)
+void listar_jug(int n_eq, int n_jug, equipo** eq, futbolista** jug)
 {
-    int n = 0;
+    int n = 0, n0 = 0, ideq = 0;
+
+    system("cls");
+
     printf("\n Jugadores:\n ==========\n");
-    for(int i = 0; (i == 0 && n_jug == 0) || i < n_jug; i++)
-    {   if(n_jug != 0)
+    for(int id = 0; id < pot(10, sizeof((*jug)[0].idFutbolista) - 1); id++)
+    {
+        n0 = 0;
+        for(int i = 0; ((i == 0 && n_jug == 0) || i < n_jug) && n0 == 0; i++)
         {
-            if(strcmp((*jug)[i].id_jugador, "\0") != 0 && n_jug != 0)
+            if(n_jug != 0)
             {
-                printf("\n=======================\n");
-                printf("\n ID: %s\n Nombre: %s\n Equipo: ", (*jug)[i].id_jugador, (*jug)[i].nombre);
-                if(strcmp((*jug)[i].id_equipo, "\0") != 0)
-                    printf("%s",(*eq)[toint((*jug)[i].id_equipo)].nombreEquipo);
-                else
-                    printf("%s", "[SIN EQUIPO]");
-                printf("\n Precio: %d\n Nota: %d\n", (*jug)[i].valor, (*jug)[i].nota);
-                n = 1;
+                if(toint((*jug)[i].idFutbolista) == id && (*jug)[i].idFutbolista[0] != '\0')
+                {
+                    for(int j = 0; j < n_eq && n0 == 0; j++)
+                    {
+                        if(toint((*jug)[i].idEquipo) == toint((*eq)[j].idEquipo) && (*eq)[j].idEquipo[0] != '\0')
+                        {
+                            ideq = j;
+                            n0 = 1;
+                        }
+                    }
+                    printf("\n=======================\n");
+                    printf("\n ID: %s\n Nombre: %s\n Equipo: %s\n Precio: %d\n Nota: %d\n", (*jug)[i].idFutbolista, (*jug)[i].nombre,
+                           (*eq)[ideq].nombreEquipo, (*jug)[i].precio, (*jug)[i].puntuacion);
+                    n = 1;
+                    n0 = 1;
+                }
             }
         }
-        if((i == n_jug - 1 && n == 0) || n_jug == 0)
-            printf("\n==================\n NO HAY JUGADORES\n==================\n");
     }
+    if(n == 0 || n_jug == 0)
+        printf("\n==================\n NO HAY JUGADORES\n==================\n");
     printf("\n=======================\n");
 
     printf("\n");
     system("pause");
+    system("cls");
 }
 
-//Cabecera: void listar_us(int n_us, usuario* us)
+//Cabecera: void listar_us(int n_us, usuario** us)
 //Precondición: n_us es el tamaño del vector de registros us, correspondiente a los usuarios.
 //Postcondición: Muestra listados todos los usuarios.
 
 void listar_us(int n_us, usuario** us)
 {
-    int n = 0;
+    int n = 0, n0 = 0;
+
+    system("cls");
+
     printf("\n Usuarios:\n><><>=<><><\n");
-    for(int i = 0; (i == 0 && n_us == 0) || i < n_us; i++)
+    for(int id = 0; id < pot(10, sizeof((*us)[0].idUser) - 1); id++)
     {
-        if(n_us != 0)
+        n0 = 0;
+        for(int i = 0; ((i == 0 && n_us == 0) || i < n_us) && n0 == 0; i++)
         {
-            if(strcmp((*us)[i].idUser, "\0") != 0 && n_us != 0)
+            if(n_us != 0)
             {
-                printf("\n ID: %s\n Nombre: %s\n Permisos: %s\n Nombre de usuario: %s\n Contrase%ca:", (*us)[i].idUser, (*us)[i].nombre, (*us)[i].permisos,
-                       (*us)[i].usuario, 164);
-                if(strcmp((*us)[i].permisos, "Administrador") != 0)
-                    printf(" %s\n", (*us)[i].password);
-                else
-                    printf(" %s\n", "********");
-                n = 1;
+                if(toint((*us)[i].idUser) == id && (*us)[i].idUser[0] != '\0')
+                {
+                    printf("\n ID: %s\n Nombre: %s\n Permisos: %s\n Nombre de usuario: %s\n Contrase%ca:", (*us)[i].idUser, (*us)[i].nombre, (*us)[i].perfil,
+                           (*us)[i].usuario, 164);
+                    if(strcmp((*us)[i].perfil, "Administrador") != 0)
+                        printf(" %s\n", (*us)[i].password);
+                    else
+                        printf(" %s\n", "********");
+                    n = 1;
+                    n0 = 1;
+                }
             }
         }
-        if((i == n_us - 1 && n == 0) || n_us == 0)
-            printf("\n=================\n NO HAY USUARIOS\n=================\n");
     }
+    if(n == 0 || n_us == 0)
+        printf("\n=================\n NO HAY USUARIOS\n=================\n");
     printf("\n");
     system("pause");
+    system("cls");
 }
 
-//Cabecera: void listar_con(int n_con, config* con)
+//Cabecera: void listar_con(int n_con, config** con)
 //Precondición: n_con es el tamaño del vector de registros con, correspondiente a la configuración.
 //Postcondición: Muestra la configuración actual.
 
 void listar_con(int n_con, config** con)
 {
+    system("cls");
+
     printf("\n Configuracion actual:\n ><><><><><><><><><><\n");
     for(int i = 0; i < n_con; i++)
         if(n_con != 0)
-            printf("\n %s: %d\n", (*con)[i].campo, (*con)[i].value);
+            printf("\n %s: %d\n", (*con)[i].data, (*con)[i].value);
 
     printf("\n");
     system("pause");
+    system("cls");
 }
 
 //-------------------
 //    FUNCIÓN MOD
 //-------------------
 
-//Cabecera: void mod_eq(int* n_eq, int n_jug, equipos* eq, jugadores* jug)
-//Precondición: n_eq y n_jug son el tamaño de los respectivos vectores de registros eq y jug, correspondientes a los equipos y jugadores.
+//Cabecera: void mod_eq(int* n_eq, int n_jug, int n_fpl, equipo** eq, futbolista** jug, futPlantilla** fpl)
+//Precondición: n_eq, n_jug y n_fpl son el tamaño de los respectivos vectores de registros eq, jug y fpl, correspondientes a los equipos, jugadores y la relación
+//              entre futbolistas y las plantillas.
 //Postcondición: Permite modificar las carácterísticas de cada equipo (nombre)
 
-void mod_eq(int* n_eq, int n_jug, equipos** eq, jugadores** jug)
+void mod_eq(int* n_eq, int n_jug, int n_fpl, equipo** eq, futbolista** jug, futPlantilla** fpl)
 {
-    int n, id;
+    int n = 1, id;
     char s[21];
+
+    system("cls");
+
     do
     {
-        printf("\n Modificacion de equipo:\n=========================\n 1.-Cambiar nombre de equipo\n 2.-A%cadir equipo\n 3.-Eliminar equipo\n\n 4.-Volver\n\n Seleccion: ", 164);
+        if(n < 1 || n > 4)
+        {
+            system("pause");
+            system("cls");
+        }
+        printf("\n Modificacion de equipo:\n=========================\n 1.-Cambiar nombre de equipo\n 2.-A%cadir equipo\n"
+               " 3.-Eliminar equipo\n\n 4.-Volver\n\n Seleccion: ", 164);
         scanf("%d", &n);
         fflush(stdin);
 
@@ -437,6 +565,7 @@ void mod_eq(int* n_eq, int n_jug, equipos** eq, jugadores** jug)
         {
         case 1:
             id = 0;
+            system("cls");
             do
             {
                 printf("\n Introduzca:\n 1.-Identificador de equipo\n 2.-Nombre de equipo\n\n 3.-Volver\n\n Seleccion: ");
@@ -446,19 +575,22 @@ void mod_eq(int* n_eq, int n_jug, equipos** eq, jugadores** jug)
                 switch(n)
                 {
                 case 1:
+                    system("cls");
                     printf("\n Introduzca identificador: ");
                     gets(s);
                     fflush(stdin);
                     strtok(s, "\n");
-                    id = toint(s);
-
+                    system("cls");
+                    while(id >= 0 && id < *n_eq && strcmp(s, (*eq)[id].idEquipo) != 0)
+                        id++;
                     break;
                 case 2:
+                    system("cls");
                     printf("\n Introduzca nombre de equipo: ");
                     fgets(s, 21, stdin);
                     fflush(stdin);
                     strtok(s, "\n");
-
+                    system("cls");
                     while(id >= 0 && id < *n_eq && strcmp(s, (*eq)[id].nombreEquipo) != 0)
                         id++;
                     break;
@@ -468,39 +600,56 @@ void mod_eq(int* n_eq, int n_jug, equipos** eq, jugadores** jug)
                     printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
                 }
             } while(n < 1 || n > 3);
+            system("cls");
             if(n != 3)
             {
                 if(id < 0 || id >= *n_eq || strcmp((*eq)[id].nombreEquipo, "\0") == 0)
-                {
                     printf("\n\n==============================\n ERROR - EQUIPO NO ENCONTRADO\n==============================\n");
-                    system("pause");
-                }
                 else
                 {
                     do
                     {
-                        printf("\n Introduzca nuevo nombre de equipo: ");
+                        system("cls");
+                        printf("\n Nombre actual: %s\n Introduzca nuevo nombre de equipo: ", (*eq)[id].nombreEquipo);
                         fgets(s, 21, stdin);
                         fflush(stdin);
                         strtok(s, "\n");
-
+                        system("cls");
                         if(textest(s) == 1)
                         {
                             printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
                             printf("\n INICIE EL NOMBRE POR UNA LETRA\n");
                         }
                         else
+                        {
+                            n = 0;
+                            for(int j = 0; j < *n_eq && n == 0; j++)
+                            {
+                                if(strcmp(s, (*eq)[j].nombreEquipo) == 0 && id != j)
+                                {
+                                    system("cls");
+                                    printf("\n\n NOMBRE INTRODUCIDO NO DISPONIBLE - PRUEBE OTRO NOMBRE\n\n");
+                                    n = 1;
+                                    system("pause");
+                                }
+                            }
+                        }
+                        if(textest(s) == 0 && n == 0)
+                        {
                             strcpy((*eq)[id].nombreEquipo, s);
-
-                    } while(textest((*eq)[id].nombreEquipo) == 1);
+                            printf("\n\n================\n CAMBIO EXITOSO\n================\n");
+                        }
+                    } while(textest(s) == 1 || n == 1);
                 }
+                system("pause");
+                system("cls");
             }
             break;
         case 2:
             anadir_eq(n_eq, eq);
             break;
         case 3:
-            eliminar_eq(*n_eq, n_jug, eq, jug);
+            eliminar_eq(*n_eq, n_jug, n_fpl, eq, jug, fpl);
             break;
         case 4:
             break;          //VOLVER AL MENÚ PRINCIPAL
@@ -508,22 +657,30 @@ void mod_eq(int* n_eq, int n_jug, equipos** eq, jugadores** jug)
             printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
         }
     } while(n != 4);
+    system("cls");
 }
 
-//Cabecera: void mod_jug(int n_eq, int* n_jug, equipos* eq, jugadores* jug, config* con)
-//Precondición: n_eq y n_jug son el tamaño de los respectivos vectores de registros eq y jug, correspondientes a los equipos y jugadores.
-//              con es el vector de registros de configuración.
+//Cabecera: void mod_jug(int idp, int n_eq, int* n_jug, int n_fpl, equipo** eq, futbolista** jug, futPlantilla** fpl, config** con)
+//Precondición: idp es la id del usuario actual. n_eq, n_jug y n_fpl son el tamaño de los respectivos vectores de registros eq, jug y fpl, correspondientes a los equipos, jugadores y la relación
+//              entre futbolistas y las plantillas. con es el vector de registros de configuración.
 //Postcondición: Permite modificar las carácterísticas de cada jugador (nombre, precio, equipo al que pertenece).
 
-void mod_jug(int n_eq, int* n_jug, equipos** eq, jugadores** jug, config** con)
+void mod_jug(int n_eq, int* n_jug, int n_fpl, equipo** eq, futbolista** jug, futPlantilla** fpl, config** con)
 {
-    int n, id, ideq, presu_base;
+    int n = 1, id, ideq, presu_base;
     char s[21];
+
+    system("cls");
 
     gettot("presu_base", &presu_base, con);
 
     do
     {
+        if(n < 1 || n > 4)
+        {
+            system("pause");
+            system("cls");
+        }
         printf("\n Modificacion de jugador:\n==========================\n 1.-Modificar jugador\n 2.-A%cadir jugador\n 3.-Eliminar jugador\n\n"
                " 4.-Volver\n\n Seleccion: ", 164);
         scanf("%d", &n);
@@ -533,8 +690,14 @@ void mod_jug(int n_eq, int* n_jug, equipos** eq, jugadores** jug, config** con)
         switch(n)
         {
         case 1:
+            system("cls");
             do
             {
+                if(n < 1 || n > 3)
+                {
+                    system("pause");
+                    system("cls");
+                }
                 printf("\n Introduzca:\n 1.-Identificador de jugador\n 2.-Nombre de jugador\n\n 3.-Volver\n\n Seleccion: ");
                 scanf("%d", &n);
                 fflush(stdin);
@@ -542,13 +705,16 @@ void mod_jug(int n_eq, int* n_jug, equipos** eq, jugadores** jug, config** con)
                 switch(n)
                 {
                 case 1:
+                    system("cls");
                     printf("\n Introduzca identificador: ");
                     gets(s);
                     fflush(stdin);
                     strtok(s, "\n");
-                    id = toint(s);
+                    while(id >= 0 && id < *n_jug && strcmp(s, (*jug)[id].idFutbolista) != 0)
+                        id++;
                     break;
                 case 2:
+                    system("cls");
                     printf("\n Introduzca nombre de jugador: ");
                     fgets(s, 21, stdin);
                     fflush(stdin);
@@ -563,6 +729,7 @@ void mod_jug(int n_eq, int* n_jug, equipos** eq, jugadores** jug, config** con)
                     printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
                 }
             } while(n < 1 || n > 3);
+            system("cls");
             if(n != 3)
             {
                 ideq = 0;
@@ -574,39 +741,68 @@ void mod_jug(int n_eq, int* n_jug, equipos** eq, jugadores** jug, config** con)
                 {
                     do
                     {
-                        printf("\n Introduzca campo a modificar:\n ID: %s\n 1.-Nombre: %s\n 2.-Equipo: ", (*jug)[id].id_jugador,
-                               (*jug)[id].nombre);
-                        if((*jug)[id].id_equipo[0] != '\0')
-                            printf("%s", (*eq)[toint((*jug)[id].id_equipo)].nombreEquipo);
-                        else
-                            printf("[SIN EQUIPO]");
-                        printf("\n 3.-Precio: %d\n 4.-Nota: %d\n\n 5.-Volver\n\n Seleccion: ", (*jug)[id].valor, (*jug)[id].nota);
+                        if(n < 1 || n > 5)
+                        {
+                            system("pause");
+                            system("cls");
+                        }
+                        printf("\n Introduzca campo a modificar:\n ID: %s\n 1.-Nombre: %s\n 2.-Equipo: %s\n 3.-Precio: %d\n 4.-Nota: %d\n\n"
+                               " 5.-Volver\n\n Seleccion: ", (*jug)[id].idFutbolista, (*jug)[id].nombre, (*eq)[toint((*jug)[id].idEquipo)].nombreEquipo,
+                               (*jug)[id].precio, (*jug)[id].puntuacion);
                         scanf("%d", &n);
                         fflush(stdin);
 
                         switch(n)
                         {
                         case 1:
+
                             do
                             {
+                                system("cls");
                                 printf("\n Introduzca nuevo nombre de jugador: ");
-                                fgets((*jug)[id].nombre, 21, stdin);
+                                fgets(s, 21, stdin);
                                 fflush(stdin);
-                                strtok((*jug)[id].nombre, "\n");
+                                strtok(s, "\n");
 
-                                if(textest((*jug)[id].nombre) == 1)
+                                if(textest(s) == 1)
                                 {
                                     printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
                                     printf("\n INICIE EL NOMBRE POR UNA LETRA\n");
                                 }
-
-                            } while(textest((*jug)[id].nombre) == 1);
+                                else
+                                {
+                                    n = 0;
+                                    for(int j = 0; j < *n_jug && n == 0; j++)
+                                    {
+                                        if(strcmp(s, (*jug)[j].nombre) == 0 && id != j)
+                                        {
+                                            system("cls");
+                                            printf("\n\n NOMBRE INTRODUCIDO NO DISPONIBLE - PRUEBE OTRO NOMBRE\n\n");
+                                            n = 1;
+                                            system("pause");
+                                        }
+                                    }
+                                }
+                                if(textest(s) == 0 && n == 0)
+                                {
+                                    strcpy((*jug)[id].nombre, s);
+                                    printf("\n\n================\n CAMBIO EXITOSO\n================\n");
+                                }
+                            } while(textest(s) == 1 || n == 1);
+                            system("pause");
+                            system("cls");
                             break;
                         case 2:
+                            system("cls");
+                            ideq = 0;
                             do
                             {
-                                printf("\n Introduzca:\n 1.-Identificador del nuevo equipo\n 2.-Nombre del nuevo equipo\n 3.-Quitar de equipo\n\n"
-                                       " 4.-Volver\n\n Seleccion: ");
+                                if(n < 1 || n > 3)
+                                {
+                                    system("pause");
+                                    system("cls");
+                                }
+                                printf("\n Introduzca:\n 1.-Identificador del nuevo equipo\n 2.-Nombre del nuevo equipo\n\n 3.-Volver\n\n Seleccion: ");
                                 scanf("%d", &n);
                                 fflush(stdin);
 
@@ -617,8 +813,8 @@ void mod_jug(int n_eq, int* n_jug, equipos** eq, jugadores** jug, config** con)
                                     gets(s);
                                     fflush(stdin);
                                     strtok(s, "\n");
-                                    ideq = toint(s);
-
+                                    while(ideq >= 0 && ideq < n_eq && strcmp(s, (*eq)[ideq].idEquipo) != 0)
+                                        ideq++;
                                     break;
                                 case 2:
                                     printf("\n Introduzca nombre del equipo: ");
@@ -631,56 +827,48 @@ void mod_jug(int n_eq, int* n_jug, equipos** eq, jugadores** jug, config** con)
                                         ideq++;
                                     break;
                                 case 3:
-                                    if(strcmp((*jug)[id].id_equipo, "\0") == 0)
-                                        printf("\n=============================\n JUGADOR SIN EQUIPO ASIGNADO\n=============================\n\n");
-                                    else
-                                    {
-                                        (*jug)[id].id_equipo[0] = '\0';
-                                        printf("\n\n================\n CAMBIO EXITOSO\n================\n\n");
-                                    }
-                                    system("pause");
-                                    break;
-                                case 4:
                                     break;
                                 default:
                                     printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
                                 }
                             } while(n < 1 || n > 4);
+                            system("cls");
                             if(n == 1 || n == 2)
                             {
                                 if(ideq < 0 || ideq >= n_eq || strcmp((*eq)[ideq].nombreEquipo, "\0") == 0)
-                                {
                                     printf("\n\n==============================\n ERROR - EQUIPO NO ENCONTRADO\n==============================\n");
-                                    system("pause");
-                                }
                                 else
                                 {
-                                    tostring(ideq, (*jug)[id].id_equipo);
+                                    tostring(ideq, sizeof (*jug)[id].idEquipo, (*jug)[id].idEquipo);
                                     printf("\n\n================\n CAMBIO EXITOSO\n================\n");
-                                    system("pause");
                                 }
                             }
                             n = 2;
+                            system("pause");
+                            system("cls");
                             break;
                         case 3:
                             do
                             {
+                                system("cls");
                                 printf("\n Introduzca nuevo precio de jugador: ");
-                                scanf("%d", &(*jug)[id].valor);
+                                scanf("%d", &(*jug)[id].precio);
                                 fflush(stdin);
 
-                                if((*jug)[id].valor <= 0 || (*jug)[id].valor > presu_base)
+                                if((*jug)[id].precio <= 0 || (*jug)[id].precio > presu_base)
                                 {
                                     printf("\n\n =-=-=-=-=-=-=-=\n  VALOR NO APTO\n =-=-=-=-=-=-=-=\n"
                                            "\n (PARA ESTE CAMPO)\n  MINIMO => 1\tMAXIMO => %d\n\n", presu_base);
                                     system("pause");
                                 }
 
-                            } while((*jug)[id].valor <= 0 || (*jug)[id].valor > presu_base);
+                            } while((*jug)[id].precio <= 0 || (*jug)[id].precio > presu_base);
+                            system("cls");
                             break;
                         case 4:
                             do
                             {
+                                system("cls");
                                 printf("\n Introduzca valoracion del jugador:\t");
                                 scanf("%d", &n);
                                 fflush(stdin);
@@ -692,9 +880,15 @@ void mod_jug(int n_eq, int* n_jug, equipos** eq, jugadores** jug, config** con)
                                     system("pause");
                                 }
                                 else
-                                    (*jug)[id].nota = n;
+                                {
+                                    (*jug)[id].puntuacion = n;
+                                    printf("\n\n================\n CAMBIO EXITOSO\n================\n");
+                                }
+
 
                             } while(n < 0 || n > 10);
+                            system("pause");
+                            system("cls");
                             break;
                         case 5:
                             break;
@@ -705,12 +899,13 @@ void mod_jug(int n_eq, int* n_jug, equipos** eq, jugadores** jug, config** con)
                     n = 0;
                 }
             }
+            system("cls");
             break;
         case 2:
             anadir_jug(n_eq, n_jug, eq, jug, con);
             break;
         case 3:
-            eliminar_jug(*n_jug, eq, jug);
+            eliminar_jug(n_eq, *n_jug, n_fpl, eq, jug, fpl);
             break;
         case 4:
             break;          //VOLVER AL MENÚ PRINCIPAL
@@ -718,19 +913,27 @@ void mod_jug(int n_eq, int* n_jug, equipos** eq, jugadores** jug, config** con)
             printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
         }
     } while(n != 4);
+    system("cls");
 }
 
-//Cabecera: void mod_us(int n_us, usuario* us)
+//Cabecera: void mod_us(int n_us, usuario** us)
 //Precondición: n_us es el tamaño del vector de registros us, correspondientes a los usuarios.
 //Postcondición: Permite modificar las carácterísticas de cada usuario (permisos, contraseña, nombre).
 
-void mod_us(int n_us, usuario** us)
+void mod_us(int idp, int n_us, usuario** us)
 {
-    int n, id, k = 0;
-    char s[20];
+    int n = 1, id, k = 0;
+    char s[20], s1[6];
+
+    system("cls");
 
     do
     {
+        if(n < 1 || n > 3)
+        {
+            system("pause");
+            system("cls");
+        }
         printf("\n Introduzca:\n 1.-Identificador de Usuario\n 2.-Nombre de cuenta\n\n 3.-Volver\n\n Seleccion: ");
         scanf("%d", &n);
         fflush(stdin);
@@ -739,13 +942,16 @@ void mod_us(int n_us, usuario** us)
         switch(n)
         {
         case 1:
+            system("cls");
             printf("\n Introduzca identificador: ");
             gets(s);
             fflush(stdin);
             strtok(s, "\n");
-            id = toint(s);
+            while(id >= 0 && id < n_us && strcmp(s, (*us)[id].idUser) != 0 )
+                id++;
             break;
         case 2:
+            system("cls");
             printf("\n Introduzca nombre de cuenta: ");
             fgets(s, 6, stdin);
             fflush(stdin);
@@ -761,6 +967,7 @@ void mod_us(int n_us, usuario** us)
             printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
         }
     } while(n < 1 || n > 3);
+    system("cls");
     if(n != 3)
     {
         if(id < 0 || id >= n_us || strcmp((*us)[id].nombre, "\0") == 0 || strcmp((*us)[id].nombre, " ") == 0)
@@ -769,33 +976,37 @@ void mod_us(int n_us, usuario** us)
             system("pause");
         } else
         {
-            if(strcmp((*us)[id].permisos, "Administrador") == 0)
+            if(strcmp((*us)[id].perfil, "Administrador") == 0)
             {
                 printf("\n Introduzca contrase%ca: ", 164);
                 gets(s);
                 fflush(stdin);
                 strtok(s, "\n");
-
+                system("cls");
                 if(strcmp((*us)[id].password, s) != 0)
                 {
                     printf("\n\n=======================\n CONTRASE%cA INCORRECTA\n=======================\n", 165);
                     k = 1;
-                    system("pause");
                 } else
                 {
                     printf("\n\n=====================\n CONTRASE%cA CORRECTA\n=====================\n", 165);
                     k = 0;
-                    system("pause");
                 }
+                system("pause");
+                system("cls");
             }
             if(k == 0)
             {
+                system("cls");
                 do
                 {
-                    printf("\n ID: %s\n 1.-Nombre: %s\n 2.-Permisos: %s\n 3.-Nombre de usuario: %s\n 4.-Contrase%ca: %s\n\n 5.-Volver\n", (*us)[id].idUser, (*us)[id].nombre,
-                           (*us)[id].permisos, (*us)[id].usuario, 164, (*us)[id].password);
-
-                    printf("\n Elija campo a modificar: ");
+                    if(n < 1 || n > 5)
+                    {
+                        system("pause");
+                        system("cls");
+                    }
+                    printf("\n Elija campo a modificar: \n ID: %s\n 1.-Nombre: %s\n 2.-Permisos: %s\n 3.-Nombre de usuario: %s\n 4.-Contrase%ca: %s\n\n"
+                           " 5.-Volver\n\n Seleccion: ", (*us)[id].idUser, (*us)[id].nombre, (*us)[id].perfil, (*us)[id].usuario, 164, (*us)[id].password);
                     scanf("%d", &n);
                     fflush(stdin);
 
@@ -804,6 +1015,7 @@ void mod_us(int n_us, usuario** us)
                     case 1:
                         do
                         {
+                            system("cls");
                             printf("\n Introduzca nuevo nombre: ");
                             fgets((*us)[id].nombre, 21, stdin);
                             fflush(stdin);
@@ -813,44 +1025,86 @@ void mod_us(int n_us, usuario** us)
                             {
                                 printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
                                 printf("\n INICIE EL NOMBRE POR UNA LETRA\n");
+                                system("pause");
                             }
-
+                            else
+                                printf("\n\n================\n CAMBIO EXITOSO\n================\n");
                         } while(textest((*us)[id].nombre) == 1);
+                        system("pause");
+                        system("cls");
                         break;
                     case 2:
-                        do
+                        system("cls");
+                        if(idp == toint((*us)[id].idUser))
+                            printf("\n No puede modificar su propio nivel de permisos\n");
+                        else
                         {
-                            printf("\n Introduzca nuevos permisos:\n 1.-Administrador\n 2.-Cronista\n 3.-Participante\n\n Seleccion: ");
-                            scanf("%d", &n);
-                            fflush(stdin);
+                            do
+                            {
 
-                            if(n == 1)
-                                strcpy((*us)[id].permisos, "Administrador");
-                            else if(n == 2)
-                                strcpy((*us)[id].permisos, "Cronista");
-                            else if(n == 3)
-                                strcpy((*us)[id].permisos, "Participante");
-                        } while(n < 1 && n > 3);
+                                if(n < 1 || n > 3)
+                                {
+                                    system("pause");
+                                    system("cls");
+                                }
+                                printf("\n Introduzca nuevos permisos:\n 1.-Administrador\n 2.-Cronista\n 3.-Participante\n\n Seleccion: ");
+                                scanf("%d", &n);
+                                fflush(stdin);
+
+                                if(n == 1)
+                                    strcpy((*us)[id].perfil, "Administrador");
+                                else if(n == 2)
+                                    strcpy((*us)[id].perfil, "Cronista");
+                                else if(n == 3)
+                                    strcpy((*us)[id].perfil, "Participante");
+                            } while(n < 1 && n > 3);
+                            printf("\n\n================\n CAMBIO EXITOSO\n================\n");
+                        }
+                        system("pause");
+                        system("cls");
                         break;
                     case 3:
                         do
                         {
+                            system("cls");
                             printf("\n Introduzca nuevo nombre de usuario: ");
-                            fgets((*us)[id].usuario, 6, stdin);
+                            fgets(s1, 6, stdin);
                             fflush(stdin);
-                            strtok((*us)[id].usuario, "\n");
+                            strtok(s1, "\n");
 
-                            if(textest((*us)[id].usuario) == 1)
+                            if(textest(s1) == 1)
                             {
                                 printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
                                 printf("\n INICIE EL NOMBRE POR UNA LETRA\n");
+                                system("pause");
                             }
-
-                        } while(textest((*us)[id].usuario) == 1);
+                            else
+                            {
+                                n = 0;
+                                for(int j = 0; j < n_us && n == 0; j++)
+                                {
+                                    if(strcmp(s1, (*us)[j].usuario) == 0 && id != j)
+                                    {
+                                        system("cls");
+                                        printf("\n\n NOMBRE INTRODUCIDO NO DISPONIBLE - PRUEBE OTRO NOMBRE\n\n");
+                                        n = 1;
+                                        system("pause");
+                                    }
+                                }
+                            }
+                            if(textest(s1) == 0 && n == 0)
+                            {
+                                strcpy((*us)[id].usuario, s1);
+                                printf("\n\n================\n CAMBIO EXITOSO\n================\n");
+                            }
+                        } while(textest(s1) == 1 || n == 1);
+                        system("pause");
+                        system("cls");
                         break;
                     case 4:
                         do
                         {
+                            system("cls");
                             printf("\n Introduzca nueva contrase%ca: ", 164);
                             fgets((*us)[id].password, 9, stdin);
                             fflush(stdin);
@@ -860,9 +1114,13 @@ void mod_us(int n_us, usuario** us)
                             {
                                 printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
                                 printf("\n INICIE EL NOMBRE POR UNA LETRA O UN NUMERO\n");
+                                system("pause");
                             }
-
+                            else
+                                printf("\n\n================\n CAMBIO EXITOSO\n================\n");
                         } while(intest((*us)[id].password) == 1);
+                        system("pause");
+                        system("cls");
                         break;
                     case 5:
                         break;          //VOLVER
@@ -873,23 +1131,27 @@ void mod_us(int n_us, usuario** us)
             }
         }
     }
+    system("cls");
 }
 
-//Cabecera: void mod_us(int n_con, config* con)
+//Cabecera: void mod_con(int n_con, config** con)
 //Precondición: n_con es el tamaño del vector de registros con, correspondiente a la configuración.
 //Postcondición: Permite modificar la configuración del programa.
 
 void mod_con(int n_con, config** con)
 {
-    int n, i = 0;
+    int n = 1, i = 0;
     char s[20];
+
+    system("cls");
 
     printf("\n Elija campo a modificar: ");
     fgets(s, 20, stdin);
     fflush(stdin);
     strtok(s, "\n");
-    while(i < n_con && strcmp(s, (*con)[i].campo) != 0)
+    while(i < n_con && strcmp(s, (*con)[i].data) != 0)
         i++;
+    system("cls");
     if(i >= n_con)
     {
         printf("\n\n=============================\n ERROR - CAMPO NO ENCONTRADO\n=============================\n");
@@ -897,38 +1159,55 @@ void mod_con(int n_con, config** con)
     }
     else
     {
-        printf("\n\n Actualmente:\n   %s: %d\n\n", (*con)[i].campo, (*con)[i].value);
         do
         {
+            system("cls");
+            printf("\n\n Actualmente:\n   %s: %d\n\n", (*con)[i].data, (*con)[i].value);
             printf("\n Introduzca nuevo valor (""-1"" para cancelar): ");
             scanf("%d", &n);
             fflush(stdin);
+            system("cls");
             if(n > 0 && n <= 999999999)
+            {
                 (*con)[i].value = n;
+                printf("\n\n================\n CAMBIO EXITOSO\n================\n");
+            }
             else if(n != -1)
             {
+
                 printf("\n\n =-=-=-=-=-=-=-=\n  VALOR NO APTO\n =-=-=-=-=-=-=-=\n"
                        "\n (PARA ESTE CAMPO)\n  MINIMO => 1\tMAXIMO => 999999999\n\n");
-                system("pause");
             }
+            system("pause");
         } while(n < -1 || n == 0 || n > 999999999);
     }
+    system("cls");
 }
 
 //------------------------
 //    FUNCIÓN ELIMINAR
 //------------------------
 
-//Cabecera: void eliminar_eq(int n_eq, int n_jug, equipos* eq, jugadores* jug)
-//Precondición: n_eq y n_jug son el tamaño de los respectivos vectores de registros eq y jug, correspondientes a los equipos y jugadores.
+//Cabecera: void eliminar_eq(int n_eq, int n_jug, int n_fpl, equipo** eq, futbolista** jug, futPlantilla** fpl)
+//Precondición: n_eq, n_jug y n_fpl son el tamaño de los respectivos vectores de registros eq, jug y fpl, correspondientes a los equipos,
+//              jugadores y la relación entre futbolistas y las plantillas.
 //Postcondición: Permite eliminar un equipo.
 
-void eliminar_eq(int n_eq, int n_jug, equipos** eq, jugadores** jug)
+void eliminar_eq(int n_eq, int n_jug, int n_fpl, equipo** eq, futbolista** jug, futPlantilla** fpl)
 {
-    int n, id;
+    int n = 1, id;
     char s[20];
+
+    system("cls");
+
     do
     {
+        if(n < 1 || n > 3)
+        {
+            system("pause");
+            system("cls");
+        }
+
         printf("\n Eliminacion de equipo:\n ============================\n Introduzca:\n 1.-Identificador de equipo\n 2.-Nombre de equipo\n\n"
                " 3.-Volver\n\n Seleccion: ");
         scanf("%d", &n);
@@ -938,13 +1217,17 @@ void eliminar_eq(int n_eq, int n_jug, equipos** eq, jugadores** jug)
         switch(n)
         {
         case 1:
+            system("cls");
             printf("\n Introduzca identificador: ");
             gets(s);
             fflush(stdin);
             strtok(s, "\n");
-            id = toint(s);
+            system("cls");
+            while(id >= 0 && id < n_eq && strcmp(s, (*eq)[id].idEquipo) != 0)
+                id++;
             break;
         case 2:
+            system("cls");
             printf("\n Introduzca nombre de equipo: ");
             fgets(s, 21, stdin);
             fflush(stdin);
@@ -952,6 +1235,7 @@ void eliminar_eq(int n_eq, int n_jug, equipos** eq, jugadores** jug)
 
             while(id >= 0 && id < n_eq && strcmp(s, (*eq)[id].nombreEquipo) != 0)
                 id++;
+            system("cls");
             break;
         case 3:
             break;
@@ -959,68 +1243,93 @@ void eliminar_eq(int n_eq, int n_jug, equipos** eq, jugadores** jug)
             printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
         }
     } while(n < 1 || n > 3);
+    system("cls");
     if(n != 3)
     {
         if(id < 0 || id >= n_eq || id < 0 || strcmp((*eq)[id].nombreEquipo, "\0") == 0)
-        {
             printf("\n\n==============================\n ERROR - EQUIPO NO ENCONTRADO\n==============================\n");
-            system("pause");
-        } else
+        else
         {
-            printf("\n Equipo:\n =======\n ID: %s\n Nombre: %s\n\n Jugadores:\n ==========\n",(*eq)[id].id_equipo, (*eq)[id].nombreEquipo);
-            n = 0;
-            for(int j = 0; j < n_jug; j++)
-            {
-                if(strcmp((*jug)[j].nombre, "\0") != 0 && strcmp((*jug)[j].id_equipo, (*eq)[id].id_equipo) == 0)
-                {
-                    printf("\n=======================\n ID: %s\n Nombre: %s\n Equipo: ", (*jug)[j].id_jugador, (*jug)[j].nombre);
-                    if(strcmp((*jug)[j].id_equipo, "\0") != 0)
-                        printf("%s", (*eq)[toint((*jug)[j].id_equipo)].nombreEquipo);
-                    else
-                        printf("%s", "[SIN EQUIPO]");
-                    printf("\n Precio: %d\n Nota: %d\n\n=======================", (*jug)[j].valor, (*jug)[j].nota);
-                    n = 1;
-                }
-
-                if(j == n_jug - 1 && n == 0)
-                    printf("===================\n [SIN JUGADORES]\n===================");
-            }
             do
             {
-                printf("\n\n Desea eliminar este equipo?\n 1.-Si\n 2.-No\n\n Seleccion: ");
+                if(n < 1 || n > 2)
+                {
+                    system("pause");
+                    system("cls");
+                }
+                printf("\n Equipo:\n =======\n ID: %s\n Nombre: %s\n\n Jugadores:\n ==========\n",(*eq)[id].idEquipo, (*eq)[id].nombreEquipo);
+                n = 0;
+                for(int j = 0; j < n_jug; j++)
+                {
+                    if((*jug)[j].nombre[0] != '\0' && toint((*jug)[j].idEquipo) == toint((*eq)[id].idEquipo) && (*jug)[j].idEquipo[0] != '\0')
+                    {
+                        printf("\n=======================\n ID: %s\n Nombre: %s\n Equipo: %s\n Precio: %d\n Nota: %d\n\n=======================",
+                               (*jug)[j].idFutbolista, (*jug)[j].nombre, (*eq)[id].nombreEquipo, (*jug)[j].precio, (*jug)[j].puntuacion);
+                        n = 1;
+                    }
+                    if(j == n_jug - 1 && n == 0)
+                        printf("===================\n [SIN JUGADORES]\n===================");
+                }
+                printf("\n\n Desea eliminar este equipo? (Al eliminarlo todos los jugadores que tenga asignados tambien seran eliminados).\n 1.-Si\n 2.-No\n\n Seleccion: ");
                 scanf("%d", &n);
                 fflush(stdin);
                 if(n != 1 && n != 2)
                     printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
             } while(n != 1 && n != 2);
-
+            system("cls");
             if(n == 1)
             {
                 for(int i = 0; i < n_jug; i++)
-                    if(toint((*eq)[id].id_equipo) == toint((*jug)[i].id_equipo))
-                        (*jug)[i].id_equipo[0] = '\0';
-
-                (*eq)[id].id_equipo[0] = '\0';
+                {
+                    if(toint((*eq)[id].idEquipo) == toint((*jug)[i].idEquipo) && (*jug)[i].idFutbolista[0] != '\0')
+                    {
+                        for(int j = 0; j < n_fpl; j++)
+                        {
+                            if(toint((*fpl)[j].idFutbolista) == toint((*jug)[i].idFutbolista) && (*jug)[j].idFutbolista[0] != '\0')
+                            {
+                                (*fpl)[j].idFutbolista[0] = '\0';
+                                (*fpl)[j].idPlantilla[0] = '\0';
+                            }
+                        }
+                        (*jug)[i].idEquipo[0] = '\0';
+                        (*jug)[i].idFutbolista[0] = '\0';
+                        (*jug)[i].nombre[0] = '\0';
+                        (*jug)[i].precio = 0;
+                        (*jug)[i].puntuacion = 0;
+                    }
+                }
+                (*eq)[id].idEquipo[0] = '\0';
                 (*eq)[id].nombreEquipo[0] = '\0';
 
                 printf("\n>-----------------<\n EQUIPO ELIMINADO\n>-----------------<\n");
             } else if(n == 2)
                 printf("\n>-----------------<\n PROCESO CANCELADO\n>-----------------<\n");
-            system("pause");
         }
     }
+    system("pause");
+    system("cls");
 }
 
-//Cabecera: void eliminar_jug(int n_jug, equipos* eq, jugadores* jug)
-//Precondición: n_eq y n_jug son el tamaño de los respectivos vectores de registros eq y jug, correspondientes a los equipos y jugadores.
+//Cabecera: void eliminar_jug(int n_jug, int n_fpl, equipo** eq, futbolista** jug, futPlantilla** fpl)
+//Precondición: n_eq, n_jug y n_fpl son el tamaño de los respectivos vectores de registros eq, jug y fpl, correspondientes a los equipos, jugadores y la relación
+//              entre futbolistas y las plantillas.
 //Postcondición: Permite eliminar un jugador.
 
-void eliminar_jug(int n_jug, equipos** eq, jugadores** jug)
+void eliminar_jug(int n_eq, int n_jug, int n_fpl, equipo** eq, futbolista** jug, futPlantilla** fpl)
 {
-    int n, id = 0;
+    int n = 1, id = 0, n0 = 0, ideq = 0;
     char s[20];
+
+    system("cls");
+
     do
     {
+        if(n < 1 || n > 3)
+        {
+            system("pause");
+            system("cls");
+        }
+
         printf("\n Eliminacion de jugador:\n ============================\n Introduzca:\n 1.-Identificador de jugador\n 2.-Nombre de jugador\n\n"
                " 3.-Volver\n\n Seleccion: ");
         scanf("%d", &n);
@@ -1030,13 +1339,17 @@ void eliminar_jug(int n_jug, equipos** eq, jugadores** jug)
         switch(n)
         {
         case 1:
+            system("cls");
             printf("\n Introduzca identificador: ");
             gets(s);
             fflush(stdin);
             strtok(s, "\n");
-            id = toint(s);
+            system("cls");
+            while(id >= 0 && id < n_jug && strcmp(s, (*jug)[id].idFutbolista) != 0)
+                id++;
             break;
         case 2:
+            system("cls");
             printf("\n Introduzca nombre de jugador: ");
             fgets(s, 21, stdin);
             fflush(stdin);
@@ -1044,6 +1357,7 @@ void eliminar_jug(int n_jug, equipos** eq, jugadores** jug)
 
             while(id >= 0 && id < n_jug && strcmp(s, (*jug)[id].nombre) != 0)
                 id++;
+            system("cls");
             break;
         case 3:
             break;
@@ -1051,56 +1365,89 @@ void eliminar_jug(int n_jug, equipos** eq, jugadores** jug)
             printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
         }
     } while(n < 1 || n > 3);
+    system("cls");
     if(n != 3)
     {
         if(id < 0 || id >= n_jug || strcmp((*jug)[id].nombre, "\0") == 0)
-        {
             printf("\n\n===============================\n ERROR - JUGADOR NO ENCONTRADO\n===============================\n");
-            system("pause");
-        } else
+        else
         {
-            printf(" ID: %s\n Nombre: %s\n Equipo: ", (*jug)[id].id_jugador, (*jug)[id].nombre);
-            if(strcmp((*jug)[id].id_equipo, "\0") != 0)
-                printf("%s", (*eq)[toint((*jug)[id].id_equipo)].nombreEquipo);
-            else
-                printf("%s", "[SIN EQUIPO]");
-            printf("\n Precio: %d\n Nota: %d\n\n=======================", (*jug)[id].valor, (*jug)[id].nota);
+            n0 = 0;
+            for(int j = 0; j < n_eq && n0 == 0; j++)
+            {
+                if(toint((*jug)[id].idEquipo) == toint((*eq)[j].idEquipo) && (*eq)[j].idEquipo[0] != '\0')
+                {
+                    ideq = j;
+                    n0 = 1;
+                }
+            }
+            n0 = 0;
             do
             {
+                if(n < 1 || n > 2)
+                {
+                    system("pause");
+                    system("cls");
+                }
+
+                printf("\n ID: %s\n Nombre: %s\n Equipo: %s\n Precio: %d\n Nota: %d\n", (*jug)[id].idFutbolista, (*jug)[id].nombre,
+                       (*eq)[ideq].nombreEquipo, (*jug)[id].precio, (*jug)[id].puntuacion);
+
                 printf("\n\n Desea eliminar este jugador?\n 1.-Si\n 2.-No\n\n Seleccion: ");
                 scanf("%d", &n);
                 fflush(stdin);
                 if(n != 1 && n != 2)
+                {
+                    system("cls");
                     printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
+                }
             } while(n != 1 && n != 2);
-
+            system("cls");
             if(n == 1)
             {
-                (*jug)[id].id_equipo[0] = '\0';
-                (*jug)[id].id_jugador[0] = '\0';
+                for(int i = 0; i < n_fpl; i++)
+                {
+                    if(toint((*fpl)[i].idFutbolista) == toint((*jug)[id].idFutbolista))
+                    {
+                        (*fpl)[i].idFutbolista[0] = '\0';
+                        (*fpl)[i].idPlantilla[0] = '\0';
+                    }
+                }
+                (*jug)[id].idEquipo[0] = '\0';
+                (*jug)[id].idFutbolista[0] = '\0';
                 (*jug)[id].nombre[0] = '\0';
-                (*jug)[id].valor = 0;
-                (*jug)[id].nota = 0;
+                (*jug)[id].precio = 0;
+                (*jug)[id].puntuacion = 0;
 
                 printf("\n>-------------------<\n JUGADOR ELIMINADO\n>-------------------<\n");
             } else if(n == 2)
                 printf("\n>-----------------<\n PROCESO CANCELADO\n>-----------------<\n");
-            system("pause");
         }
     }
+    system("pause");
+    system("cls");
 }
 
-//Cabecera: void eliminar_us(int n_us, usuario* us)
-//Precondición: n_us es el tamaño del vector de registros us, correspondientes a los usuarios.
+//Cabecera: void eliminar_us(int idp, int n_us, int n_pl, int n_fpl, usuario** us, plantilla** pl, futPlantilla** fpl)
+//Precondición: idp es la id del usuario activo. n_us, n_pl y n_fpl son el tamaño de los respectivos vectores de registros us, pl y fpl, correspondientes
+//              a los usuarios, las plantillas y la relación entre futbolistas y las plantillas.
 //Postcondición: Permite eliminar un usuario.
 
-void eliminar_us(int idp, int n_us, usuario** us)
+void eliminar_us(int idp, int n_us, int n_pl, int n_fpl, usuario** us, plantilla** pl, futPlantilla** fpl)
 {
-    int n, id;
+    int n = 1, id;
     char s[20];
+
+    system("cls");
 
     do
     {
+        if(n < 1 || n > 3)
+        {
+            system("pause");
+            system("cls");
+        }
+
         printf("\n Eliminacion de usuario:\n ============================\n\n Introduzca:\n 1.-Identificador de Usuario\n 2.-Nombre de cuenta\n\n"
                " 3.-Volver\n\n Seleccion: ");
         scanf("%d", &n);
@@ -1110,13 +1457,17 @@ void eliminar_us(int idp, int n_us, usuario** us)
         switch(n)
         {
         case 1:
+            system("cls");
             printf("\n Introduzca identificador: ");
             gets(s);
             fflush(stdin);
             strtok(s, "\n");
-            id = toint(s);
+            system("cls");
+            while(id >= 0 && id < n_us && strcmp(s, (*us)[id].idUser) != 0 )
+                id++;
             break;
         case 2:
+            system("cls");
             printf("\n Introduzca nombre de cuenta: ");
             fgets(s, 6, stdin);
             fflush(stdin);
@@ -1124,6 +1475,7 @@ void eliminar_us(int idp, int n_us, usuario** us)
 
             while(id >= 0 && id < n_us && strcmp(s, (*us)[id].usuario) != 0)
                 id++;
+            system("cls");
             break;
         case 3:
             break;
@@ -1131,33 +1483,64 @@ void eliminar_us(int idp, int n_us, usuario** us)
             printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
         }
     } while(n < 1 ||n > 3);
+    system("cls");
     if(n != 3)
     {
         if(id < 0 || id >= n_us || id < 0 || strcmp((*us)[id].nombre, "\0") == 0)
             printf("\n\n===============================\n ERROR - USUARIO NO ENCONTRADO\n===============================\n");
         else if(id == idp)
             printf("\n\n======================================\n ERROR - NO PUEDE BORRARSE A SI MISMO\n======================================\n");
-        else if(strcmp((*us)[id].permisos, "Administrador") == 0)
+        else if(strcmp((*us)[id].perfil, "Administrador") == 0)
             printf("\n\n No es posible eliminar este usuario. Revoque sus permisos de administrador primero.\n\n");
         else
         {
-            printf("\n ID: %s\n Nombre: %s\n Permisos: %s\n Nombre de usuario: %s\n Contrase%ca: %s\n", (*us)[id].idUser, (*us)[id].nombre,
-                   (*us)[id].permisos, (*us)[id].usuario, 164, (*us)[id].password);
-
             do
             {
+
+                if(n < 1 || n > 2)
+                {
+                    system("pause");
+                    system("cls");
+                }
+
+                printf("\n ID: %s\n Nombre: %s\n Permisos: %s\n Nombre de usuario: %s\n Contrase%ca: %s\n", (*us)[id].idUser, (*us)[id].nombre,
+                       (*us)[id].perfil, (*us)[id].usuario, 164, (*us)[id].password);
+
+
                 printf("\n\n Desea eliminar este usuario?\n 1.-Si\n 2.-No\n\n Seleccion: ");
                 scanf("%d", &n);
                 fflush(stdin);
                 if(n != 1 && n != 2)
                     printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
             } while(n != 1 && n != 2);
-
+            system("cls");
             if(n == 1)
             {
+                if(strcmp((*us)[id].perfil, "Participante") == 0)
+                {
+                    for(int i = 0; i < n_pl; i++)
+                    {
+                        if(toint((*pl)[i].idUsuario) == toint((*us)[id].idUser))
+                        {
+                            for(int j = 0; j < n_fpl; j++)
+                            {
+                                if(toint((*fpl)[j].idPlantilla) == toint((*pl)[i].idPlantilla))
+                                {
+                                    (*fpl)[j].idPlantilla[0] = '\0';
+                                    (*fpl)[j].idFutbolista[0] = '\0';
+                                }
+                            }
+                            (*pl)[i].idPlantilla[0] = '\0';
+                            (*pl)[i].idUsuario[0] = '\0';
+                            (*pl)[i].nombre[0] = '\0';
+                            (*pl)[i].presupuesto = 0;
+                            (*pl)[i].puntuacion = 0;
+                        }
+                    }
+                }
                 (*us)[id].idUser[0] = '\0';
                 (*us)[id].nombre[0] = '\0';
-                (*us)[id].permisos[0] = '\0';
+                (*us)[id].perfil[0] = '\0';
                 (*us)[id].usuario[0] = '\0';
                 (*us)[id].password[0] = '\0';
 
@@ -1166,6 +1549,7 @@ void eliminar_us(int idp, int n_us, usuario** us)
                 printf("\n>-----------------<\n PROCESO CANCELADO\n>-----------------<\n");
         }
         system("pause");
+        system("cls");
     }
 }
 
@@ -1173,35 +1557,59 @@ void eliminar_us(int idp, int n_us, usuario** us)
 //    FUNCIÓN AÑADIR
 //----------------------
 
-//Cabecera: void anadir_eq(int* n_eq, equipos* eq)
+//Cabecera: void anadir_eq(int* n_eq, equipo** eq)
 //Precondición: n_eq es el tamaño del vector de registros eq, correspondientes a los equipos.
 //Postcondición: Permite añadir un equipo.
 
-void anadir_eq(int* n_eq, equipos** eq)
+void anadir_eq(int* n_eq, equipo** eq)
 {
-    int i = 0, error = 0;
+    int i = 0, n = 0, enc = 0, error = 0, k = 0;
 
-    while(i < *n_eq && (*eq)[i].id_equipo[0] != '\0')
+    system("cls");
+
+    while(i < *n_eq && (*eq)[i].idEquipo[0] != '\0')
         i++;
-
     if(i == *n_eq)
     {
-        if(((equipos*)realloc((*eq),(++(*n_eq))*sizeof(equipos))) == NULL)
+
+        if(*n_eq + 1 <= pot(10, sizeof((*eq)[i].idEquipo) - 1))
         {
-            printf("\n\n\tERROR DE  RESERVA DE MEMORIA PARA EQUIPOS");
+            if(((*eq) = (equipo*)realloc((*eq),(++(*n_eq))*sizeof(equipo))) == NULL)
+            {
+                printf("\n\n\tERROR DE  RESERVA DE MEMORIA PARA EQUIPOS\n\n");
+                error = 1;
+            }
+        }
+        else
+        {
+            printf("\n\n\tERROR - NUMERO DE IDENTIFICADOR MAXIMO ALCANZADO - SIN REGISTROS LIBRES\n\n");
             error = 1;
         }
     }
     if(error == 0)
     {
-
-        (*eq)[i].id_equipo[0] = '\0';
+        (*eq)[i].idEquipo[0] = '\0';
         (*eq)[i].nombreEquipo[0] = '\0';
 
-        tostring(i, (*eq)[i].id_equipo);
-        printf("\n ID: %s\n", (*eq)[i].id_equipo);
+        enc = 0;
+        for(int j = 0; j < pot(10, sizeof((*eq)[i].idEquipo) - 1) && enc == 0; j++)
+        {
+            n = 0;
+            for(k = 0; k < *n_eq && n == 0; k++)
+            {
+                if(j == toint((*eq)[k].idEquipo) && (*eq)[k].idEquipo[0] != '\0')
+                    n = 1;
+            }
+            if(k >= *n_eq && n == 0)
+            {
+                enc = 1;
+                tostring(j, sizeof (*eq)[i].idEquipo, (*eq)[i].idEquipo);
+            }
+        }
+        n = 0;
         do
         {
+            printf("\n ID: %s\n", (*eq)[i].idEquipo);
             printf("\n Introduzca nombre de equipo:\t");
             fgets((*eq)[i].nombreEquipo, 21, stdin);
             fflush(stdin);
@@ -1209,180 +1617,265 @@ void anadir_eq(int* n_eq, equipos** eq)
 
             if(textest((*eq)[i].nombreEquipo) == 1)
             {
+                system("cls");
                 printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
                 printf("\n INICIE EL NOMBRE POR UNA LETRA\n");
+                system("pause");
             }
-
-        } while(textest((*eq)[i].nombreEquipo) == 1);
+            else
+            {
+                n = 0;
+                for(int j = 0; j < *n_eq && n == 0; j++)
+                {
+                    if(strcmp((*eq)[i].nombreEquipo, (*eq)[j].nombreEquipo) == 0 && i != j)
+                    {
+                        system("cls");
+                        printf("\n\n NOMBRE INTRODUCIDO NO DISPONIBLE - PRUEBE OTRO NOMBRE\n\n");
+                        n = 1;
+                        system("pause");
+                    }
+                }
+            }
+            system("cls");
+        } while(textest((*eq)[i].nombreEquipo) == 1 || n == 1);
 
         printf("\n >--------------<\n  EQUIPO A%cADIDO\n >--------------<\n", 165);
     }
     system("pause");
+    system("cls");
 }
 
-//Cabecera: void anadir_jug(int n_eq, int* n_jug, equipos* eq, jugadores* jug, config* con)
+//Cabecera: void anadir_jug(int n_eq, int* n_jug, equipo** eq, futbolista** jug, config** con)
 //Precondición: n_eq y n_jug son el tamaño de los respectivos vectores de registros eq y jug, correspondientes a los equipos y jugadores.
 //              con es el vector de registros de configuración.
 //Postcondición: Permite añadir un jugador.
 
-void anadir_jug(int n_eq, int* n_jug, equipos** eq, jugadores** jug, config** con)
+void anadir_jug(int n_eq, int* n_jug, equipo** eq, futbolista** jug, config** con)
 {
-    int i = 0, n, id, presu_base, error = 0;
+    int i = 0, n = 0, enc = 0, id, presu_base, error = 0, k = 0;
     char s[20];
+
+    system("cls");
 
     gettot("presu_base", &presu_base, con);
 
-    while(i < *n_jug && (*jug)[i].id_jugador[0] != '\0')
-        i++;
-    if(i == *n_jug)
+    for(int i = 0; (i == 0 && n_eq == 0) || i < n_eq; i++)
     {
-        if(((*jug) = (jugadores*)realloc((*jug),(++(*n_jug))*sizeof(jugadores))) == NULL)
-        {
-            printf("\n\n\tERROR DE  RESERVA DE MEMORIA PARA JUGADORES");
-            error = 1;
-            system("pause");
-        }
+        if(n_eq != 0)
+            if(strcmp((*eq)[i].idEquipo, "\0") != 0 && n_eq != 0)
+                n = 1;
     }
-    if(error == 0)
+    if(n == 1)
     {
-
-        (*jug)[i].id_equipo[0] = '\0';
-        (*jug)[i].id_jugador[0] = '\0';
-        (*jug)[i].nombre[0] = '\0';
-        (*jug)[i].valor = 0;
-        (*jug)[i].nota = 0;
-
-        tostring(i, (*jug)[i].id_jugador);
-        printf("\n id: %s\n", (*jug)[i].id_jugador);
-
-        do
+        while(i < *n_jug && (*jug)[i].idFutbolista[0] != '\0')
+            i++;
+        if(i == *n_jug)
         {
-            printf("\n Introduzca nombre de jugador:\t");
-            fgets((*jug)[i].nombre, 21, stdin);
-            fflush(stdin);
-            strtok((*jug)[i].nombre, "\n");
-
-            if(textest((*jug)[i].nombre) == 1)
+            if(*n_jug + 1 <= pot(10, sizeof((*jug)[i].idFutbolista) - 1))
             {
-                printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
-                printf("\n INICIE EL NOMBRE POR UNA LETRA\n");
-            }
-
-        } while(textest((*jug)[i].nombre) == 1);
-        do
-        {
-            printf("\n Introduzca precio de jugador:\t");
-            scanf("%d", &n);
-            fflush(stdin);
-
-            if(n <= 0 || n > presu_base)
-            {
-                printf("\n\n =-=-=-=-=-=-=-=\n  VALOR NO APTO\n =-=-=-=-=-=-=-=\n"
-                       "\n (PARA ESTE CAMPO)\n  MINIMO => 1\tMAXIMO => %d\n\n", presu_base);
-                system("pause");
+                if(((*jug) = (futbolista*)realloc((*jug),(++(*n_jug))*sizeof(futbolista))) == NULL)
+                {
+                    printf("\n\n\tERROR DE  RESERVA DE MEMORIA PARA JUGADORES");
+                    error = 1;
+                }
             }
             else
-                (*jug)[i].valor = n;
-
-        } while(n <= 0 || n > presu_base);
-        do
-        {
-            printf("\n Introduzca valoracion del jugador:\t");
-            scanf("%d", &n);
-            fflush(stdin);
-
-            if(n < 0 || n > 10)
             {
-                printf("\n\n =-=-=-=-=-=-=-=\n  VALOR NO APTO\n =-=-=-=-=-=-=-=\n"
-                       "\n (PARA ESTE CAMPO)\n  MINIMO => 0\tMAXIMO => 10\n\n");
-                system("pause");
+                printf("\n\n\tERROR - NUMERO DE IDENTIFICADOR MAXIMO ALCANZADO - SIN REGISTROS LIBRES\n\n");
+                error = 1;
             }
-            else
-                (*jug)[i].nota = n;
-
-        } while(n < 0 || n > 10);
-
-        printf("\n >---------------<\n  JUGADOR A%cADIDO\n >---------------<\n", 165);
-        system("pause");
-        n = 0;
-        do
+        }
+        if(error == 0)
         {
-            printf("\n Desea a%cadir el jugador a un equipo?\n 1.-Si\n 2.-No\n\n Seleccion: ", 164);
-            scanf("%d", &n);
-            fflush(stdin);
-            switch(n)
+            (*jug)[i].idEquipo[0] = '\0';
+            (*jug)[i].idFutbolista[0] = '\0';
+            (*jug)[i].nombre[0] = '\0';
+            (*jug)[i].precio = 0;
+            (*jug)[i].puntuacion = 0;
+
+            enc = 0;
+            for(int j = 0; j < pot(10, sizeof((*jug)[i].idFutbolista) - 1) && enc == 0; j++)
             {
-            case 1:
+                n = 0;
+                for(k = 0; k < *n_jug && n == 0; k++)
+                {
+                    if(j == toint((*jug)[k].idFutbolista) && (*jug)[k].idFutbolista[0] != '\0')
+                        n = 1;
+                }
+                if(k >= *n_jug && n == 0)
+                {
+                    enc = 1;
+                    tostring(j, sizeof (*jug)[i].idFutbolista, (*jug)[i].idFutbolista);
+                }
+            }
+            n = 0;
+            do
+            {
+                system("cls");
+                printf("\n ID: %s\n", (*jug)[i].idFutbolista);
+                printf("\n Introduzca nombre de jugador:\t");
+                fgets((*jug)[i].nombre, 21, stdin);
+                fflush(stdin);
+                strtok((*jug)[i].nombre, "\n");
+
+                if(textest((*jug)[i].nombre) == 1)
+                {
+                    system("cls");
+                    printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
+                    printf("\n INICIE EL NOMBRE POR UNA LETRA\n");
+                    system("pause");
+                }
+                else
+                {
+                    n = 0;
+                    for(int j = 0; j < *n_jug && n == 0; j++)
+                    {
+                        if(strcmp((*jug)[i].nombre, (*jug)[j].nombre) == 0 && i != j)
+                        {
+                            system("cls");
+                            printf("\n\n NOMBRE INTRODUCIDO NO DISPONIBLE - PRUEBE OTRO NOMBRE\n\n");
+                            n = 1;
+                            system("pause");
+                        }
+                    }
+                }
+            } while(textest((*jug)[i].nombre) == 1 || n == 1);
+            system("cls");
+            do
+            {
+                system("cls");
+                printf("\n ID: %s\n Nombre: %s\n", (*jug)[i].idFutbolista, (*jug)[i].nombre);
+                printf("\n Introduzca precio de jugador:\t");
+                scanf("%d", &n);
+                fflush(stdin);
+
+                if(n <= 0 || n > presu_base)
+                {
+                    system("cls");
+                    printf("\n\n =-=-=-=-=-=-=-=\n  VALOR NO APTO\n =-=-=-=-=-=-=-=\n"
+                           "\n (PARA ESTE CAMPO)\n  MINIMO => 1\tMAXIMO => %d\n\n", presu_base);
+                    system("pause");
+                }
+                else
+                    (*jug)[i].precio = n;
+            } while(n <= 0 || n > presu_base);
+            system("cls");
+            do
+            {
+                system("cls");
+                printf("\n ID: %s\n Nombre: %s\n Precio: %d\n", (*jug)[i].idFutbolista, (*jug)[i].nombre, (*jug)[i].precio);
+                printf("\n Introduzca valoracion del jugador:\t");
+                scanf("%d", &n);
+                fflush(stdin);
+
+                if(n < 0 || n > 10)
+                {
+                    system("cls");
+                    printf("\n\n =-=-=-=-=-=-=-=\n  VALOR NO APTO\n =-=-=-=-=-=-=-=\n"
+                           "\n (PARA ESTE CAMPO)\n  MINIMO => 0\tMAXIMO => 10\n\n");
+                    system("pause");
+                }
+                else
+                    (*jug)[i].puntuacion = n;
+
+            } while(n < 0 || n > 10);
+            system("cls");
+            n = 1;
+
+            do
+            {
+                if(id >= n_eq || id < 0 || strcmp((*eq)[id].nombreEquipo, "\0") == 0)
+                {
+                    system("pause");
+                    system("cls");
+                }
                 do
                 {
-                    printf("\n Introduzca:\n 1.-Identificador de equipo\n 2.-Nombre de equipo\n\n 3.-Volver\n\n Seleccion: ");
+                    if(n < 1 || n > 3)
+                    {
+                        system("pause");
+                        system("cls");
+                    }
+                    printf("\n ID: %s\n Nombre: %s\n Precio: %d\n Nota: %d\n", (*jug)[i].idFutbolista, (*jug)[i].nombre, (*jug)[i].precio, (*jug)[i].puntuacion);
+                    printf("\n A%cadir a un equipo:\n\n Introduzca:\n 1.-Listar equipos\n\n 2.-Identificador de equipo\n 3.-Nombre de equipo\n\n Seleccion: ", 164);
                     scanf("%d", &n);
                     fflush(stdin);
 
+                    id = 0;
                     switch(n)
                     {
                     case 1:
+                        listar_eq(n_eq, eq);
+                        break;
+                    case 2:
+                        system("cls");
                         printf("\n Introduzca identificador: ");
                         gets(s);
                         fflush(stdin);
                         strtok(s, "\n");
-                        id = toint(s);
+                        system("cls");
+                        while(id >= 0 && id < n_eq && strcmp(s, (*eq)[id].idEquipo) != 0)
+                            id++;
                         break;
-                    case 2:
+                    case 3:
+                        system("cls");
                         printf("\n Introduzca nombre equipo al que pertenecera el jugador: ");
                         fgets(s, 21, stdin);
                         fflush(stdin);
                         strtok(s, "\n");
 
-                        id = 0;
                         while(id < n_eq && strcmp(s, (*eq)[id].nombreEquipo) != 0)
                             id++;
-                        break;
-                    case 3:
+                        system("cls");
                         break;
                     default:
                         printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
                     }
-                } while(n < 1 || n > 3);
-                if(n != 3)
+                } while(n < 2 || n > 3);
+                system("cls");
+                if(id >= n_eq || id < 0 || strcmp((*eq)[id].nombreEquipo, "\0") == 0)
+                    printf("\n\n==============================\n ERROR - EQUIPO NO ENCONTRADO\n==============================\n");
+                else
                 {
-                    if(id >= n_eq || id < 0 || strcmp((*eq)[id].nombreEquipo, "\0") == 0)
-                        printf("\n\n==============================\n ERROR - EQUIPO NO ENCONTRADO\n==============================\n");
-                    else
-                    {
-                        tostring(id, (*jug)[i].id_equipo);
-                        printf("\n >-------<\n  A%cADIDO\n >-------<\n", 165);
-                    }
-                    system("pause");
+                    strcpy((*jug)[i].idEquipo, (*eq)[id].idEquipo);
+                    system("cls");
+                    printf("\n >---------------<\n  JUGADOR A%cADIDO\n >---------------<\n", 165);
                 }
-                n = 1;
-                break;
-            case 2:
-                (*jug)[i].id_equipo[0] = '\0';
-                break;
-            default:
-                printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
-            }
-        } while(n != 1 && n != 2);
+            } while(id >= n_eq || id < 0 || strcmp((*eq)[id].nombreEquipo, "\0") == 0);
+        }
     }
+    else
+        printf("\n PARA CREAR UN JUGADOR ES NECESARIO QUE EXISTA AL MENOS 1 EQUIPO\n\n");
+    system("pause");
+    system("cls");
 }
 
-//Cabecera: void anadir_us(char c, int* n_us, usuario* us)
+//Cabecera: void anadir_us(char c, int* n_us, usuario** us)
 //Precondición: c es el indicador del origen de la llamada (gestión de usuarios o registro de usuarios). n_us es el tamaño del vector de
 //              registros us, correspondientes a los usuarios.
 //Postcondición: Permite añadir un usuario.
 
 void anadir_us(char c, int* n_us, usuario** us)
 {
-    int i = 0, n, error = 0;
+    int i = 0, n = 1, enc = 0, error = 0, k = 0;
+
+    system("cls");
 
     while(i < *n_us && (*us)[i].idUser[0] != '\0')
         i++;
     if(i == *n_us)
     {
-        if(((*us) = (usuario*)realloc((*us),(++(*n_us))*sizeof(usuario))) == NULL)
+        if(*n_us + 1 <= pot(10, sizeof((*us)[i].idUser) - 1))
         {
-            printf("\n\n\tERROR DE  RESERVA DE MEMORIA PARA JUGADORES");
+            if(((*us) = (usuario*)realloc((*us),(++(*n_us))*sizeof(usuario))) == NULL)
+            {
+                printf("\n\n\tERROR DE  RESERVA DE MEMORIA PARA JUGADORES");
+                error = 1;
+            }
+        }
+        else
+        {
+            printf("\n\n\tERROR - NUMERO DE IDENTIFICADOR MAXIMO ALCANZADO - SIN REGISTROS LIBRES\n\n");
             error = 1;
         }
     }
@@ -1391,15 +1884,33 @@ void anadir_us(char c, int* n_us, usuario** us)
 
         (*us)[i].idUser[0] = '\0';
         (*us)[i].nombre[0] = '\0';
-        (*us)[i].permisos[0] = '\0';
+        (*us)[i].perfil[0] = '\0';
         (*us)[i].usuario[0] = '\0';
         (*us)[i].password[0] = '\0';
 
-        tostring(i, (*us)[i].idUser);
-        if(c == 'u')
-            printf("\n id: %s\n", (*us)[i].idUser);
+        enc = 0;
+        for(int j = 0; j < pot(10, sizeof((*us)[i].idUser) - 1) && enc == 0; j++)
+        {
+            n = 0;
+            for(k = 0; k < *n_us && n == 0; k++)
+            {
+                if(j == toint((*us)[k].idUser) && (*us)[k].idUser[0] != '\0')
+                    n = 1;
+            }
+            if(k >= *n_us && n == 0)
+            {
+                enc = 1;
+                tostring(j, sizeof (*us)[i].idUser, (*us)[i].idUser);
+            }
+        }
+        n = 0;
         do
         {
+            system("cls");
+            if(c == 'u')
+            {
+                printf("\n ID: %s\n", (*us)[i].idUser);
+            }
             printf("\n Introduzca nombre:\t");
             fgets((*us)[i].nombre, 21, stdin);
             fflush(stdin);
@@ -1409,29 +1920,44 @@ void anadir_us(char c, int* n_us, usuario** us)
             {
                 printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
                 printf("\n INICIE EL NOMBRE POR UNA LETRA\n");
+                system("pause");
             }
-
         } while(textest((*us)[i].nombre) == 1);
+        system("cls");
         if(c == 'u')            //Llamada desde menú de gestión de usuarios
         {
             do
             {
+                if(n < 1 || n > 3)
+                {
+                    system("pause");
+                    system("cls");
+                }
+
+                printf("\n ID: %s\n Nombre: %s\n", (*us)[i].idUser, (*us)[i].nombre);
                 printf("\n Introduzca nuevos permisos:\n 1.-Administrador\n 2.-Cronista\n 3.-Participante\n\n Seleccion: ");
                 scanf("%d", &n);
                 fflush(stdin);
 
                 if(n == 1)
-                    strcpy((*us)[i].permisos, "Administrador");
+                    strcpy((*us)[i].perfil, "Administrador");
                 else if(n == 2)
-                    strcpy((*us)[i].permisos, "Cronista");
+                    strcpy((*us)[i].perfil, "Cronista");
                 else if(n == 3)
-                    strcpy((*us)[i].permisos, "Participante");
-            } while(n < 1 && n > 3);
+                    strcpy((*us)[i].perfil, "Participante");
+            } while(n < 1 || n > 3);
         } else if(c == 'r')     //Llamada desde menú de registro de usuarios
-            strcpy((*us)[i].permisos, "Participante");
-        strtok((*us)[i].permisos, "\n");
+            strcpy((*us)[i].perfil, "Participante");
+        strtok((*us)[i].perfil, "\n");
         do
         {
+            system("cls");
+
+            if(c == 'u')
+            {
+                printf("\n ID: %s", (*us)[i].idUser);
+            }
+            printf("\n Nombre: %s\n Permisos: %s\n", (*us)[i].nombre, (*us)[i].perfil);
             printf("\n Introduzca nombre usuario:\t");
             fgets((*us)[i].usuario, 6, stdin);
             fflush(stdin);
@@ -1439,13 +1965,34 @@ void anadir_us(char c, int* n_us, usuario** us)
 
             if(textest((*us)[i].usuario) == 1)
             {
+                system("cls");
                 printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
                 printf("\n INICIE EL NOMBRE POR UNA LETRA\n");
+                system("pause");
             }
-
-        } while(textest((*us)[i].usuario) == 1);
+            else
+            {
+                n = 0;
+                for(int j = 0; j < *n_us && n == 0; j++)
+                {
+                    if(strcmp((*us)[i].usuario, (*us)[j].usuario) == 0 && i != j)
+                    {
+                        system("cls");
+                        printf("\n\n NOMBRE INTRODUCIDO NO DISPONIBLE - PRUEBE OTRO NOMBRE\n\n");
+                        n = 1;
+                        system("pause");
+                    }
+                }
+            }
+        } while(textest((*us)[i].usuario) == 1 || n == 1);
         do
         {
+            system("cls");
+            if(c == 'u')
+            {
+                printf("\n ID: %s", (*us)[i].idUser);
+            }
+            printf("\n Nombre: %s\n Permisos: %s\n Nombre de usuario: %s\n", (*us)[i].nombre, (*us)[i].perfil, (*us)[i].usuario);
             printf("\n Introduzca contrase%ca:\t", 164);
             fgets((*us)[i].password, 9, stdin);
             fflush(stdin);
@@ -1453,8 +2000,10 @@ void anadir_us(char c, int* n_us, usuario** us)
 
             if(intest((*us)[i].password) == 1)
             {
+                system("cls");
                 printf("\n\n =-=-=-=-==-=-=-=-=\n  VALOR INCORRECTO\n =-=-=-=-==-=-=-=-=\n");
                 printf("\n INICIE EL NOMBRE POR UNA LETRA O UN NUMERO\n");
+                system("pause");
             }
 
         } while(intest((*us)[i].password) == 1);
@@ -1462,13 +2011,14 @@ void anadir_us(char c, int* n_us, usuario** us)
         printf("\n >---------------<\n  USUARIO A%cADIDO\n >---------------<\n", 165);
     }
     system("pause");
+    system("cls");
 }
 
 //-------------
 //    OTRAS
 //-------------
 
-//Cabecera: void gettot(char* s, int* n, config* con)
+//Cabecera: void gettot(char* s, int* n, config** con)
 //Precondición: s es la cadena a comparar, n es la variable donde se devolverá el resultado (para la primera vez que sea llamada,
 //              n debe ser el tamaño del vector de registros con), y con el vector de registro donde se buscará la coincidencía
 //              ente s y uno de sus campos.
@@ -1482,7 +2032,7 @@ void gettot(char* s, int* n, config** con)
     {
         *n = 0;
         for(int i = 0; i < tam; i++)
-            if(strcmp((*con)[i].campo, s) == 0)
+            if(strcmp((*con)[i].data, s) == 0)
                 *n = (*con)[i].value;
     }
     else
@@ -1524,7 +2074,6 @@ int intest(char* c)
     return(n);
 }
 
-
 //Cabecera: int toint(char *c)
 //Precondición: el vector de caracteres será el objeto a convertir.
 //Postcondición: pasa el vector de caracteres dado a un entero.
@@ -1545,20 +2094,23 @@ int toint(char *c)
     return(res);
 }
 
-//Cabecera: int tostring(int n, char *c)
-//Precondición: el valor a convertir es el entero, el vector es donde se devolverá el resultado.
+//Cabecera: void tostring(int n, int tam, char *c)
+//Precondición: el valor a convertir es n, tam es el tamaño de la cadena donde se almacenrá el resultado y el vector es donde se devolverá el resultado.
 //Postcondición: pasa caracteres a enteros.
 
-void tostring(int n, char* c)
+void tostring(int n, int tam, char* c)
 {
     char nat[11] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
     int n0 = n, n1, k = 0;
+
     while(n0 > 0 || (n0 == 0 && k < 1))
     {
         n0 /= 10;
         k++;
     }
+    if(n < 10 && tam > 2)
+        k++;
     for(int i = k - 1; i >= 0; i--)
     {
         n1 = (n/pot(10, i) - (n/pot(10, (i + 1)))*10);

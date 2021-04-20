@@ -2,10 +2,13 @@
 // Created by Clawz on 06/04/2021.
 //
 
-#include "loader.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "Cronista.h"
+#include "Admin.h"
+#include "loader.h"
+
 
 
 
@@ -32,7 +35,7 @@ void loadFutPlantillas(futPlantilla **dynArray, int* n ) {
         *n = 0;
 
         do {
-            fgets(buffer, 35, file);
+            fgets(buffer, 100, file);
             stringSplit(buffer, fields);
             if (*n%50==0){
                 *dynArray=realloc((futPlantilla*)(*dynArray), (*n+50)*sizeof(futPlantilla));
@@ -62,7 +65,7 @@ void loadConfig(config **dynArray, int *n) {
         *n = 0;
 
         do {
-            fgets(buffer, 35, file);
+            fgets(buffer, 100, file);
             stringSplit(buffer, fields);
             if (*n%50==0){
                 *dynArray =realloc((config*)(*dynArray), (*n+10)*sizeof(config));
@@ -123,7 +126,7 @@ void loadEquipos(equipo **dynArray, int * n) {
         *n = 0;
 
         do {
-            fgets(buffer, 35, file);
+            fgets(buffer, 100, file);
             stringSplit(buffer, fields);
             if (*n%50==0){
                 *dynArray=realloc((equipo *)(*dynArray), (*n+50)*sizeof(equipo));
@@ -152,7 +155,7 @@ void loadUsuario(usuario **dynArray, int * n) {
         *n = 0;
 
         do {
-            fgets(buffer, 35, file);
+            fgets(buffer, 100, file);
             stringSplit(buffer, fields);
             if (*n%10==0){
                 *dynArray=realloc((usuario *)(*dynArray), (*n+10)*sizeof(usuario));
@@ -181,7 +184,7 @@ void loadPlantilla(plantilla **dynArray, int * n) {
         *n = 0;
 
         do {
-            fgets(buffer, 35, file);
+            fgets(buffer, 100, file);
             stringSplit(buffer, fields);
             if (*n%30==0){
                 *dynArray=realloc((plantilla *)(*dynArray), (*n+30)*sizeof(plantilla));
@@ -201,7 +204,7 @@ void stringSplit(char *string, char **fields) {
 
     int counter = 0;
 
-    for (char* token = strtok( string, "-"); token != NULL; token = strtok( NULL, "-"), counter++ ){
+    for (char* token = strtok( string, "-,\n"); token != NULL; token = strtok( NULL, "-,\n"), counter++ ){
 
         fields[counter] = token;
 

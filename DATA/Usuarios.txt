@@ -1,1 +1,3 @@
-01-Jesus-participante-part-part
+00-Participante-Participante-part-part
+01-Admin-Administrador-admin-admin
+02-Cronista-Cronista-cron-cron

@@ -1,12 +1,16 @@
 //
 // Created by Clawz on 06/04/2021.
 //
-
-#include "estructuras.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include "Cronista.h"
+#include "Admin.h"
 #include "loader.h"
 #include "participante.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include "Login_res.h"
+
+
+
 
 int main() {
 
@@ -28,15 +32,15 @@ int main() {
     loadPlantilla(&arrayPlantilla, &nPlantilla);
 
 
+    loginres(&nEquipo, &nFutbolista, &nUsuario, &nPlantilla, &nFutP, nConfig, &arrayEquipo, &arrayFutbolista,
+             &arrayUsuario, &arrayPlantilla, &arrayFutP, &arrayConfig);
 
-
-
-
-
-
-    menuParticipante("test", "test", &arrayConfig, &arrayFutbolista, &arrayEquipo, &arrayPlantilla, &arrayFutP,
-                     &nPlantilla, &nFutbolista, &nEquipo, &nFutP);
-
+    free(arrayConfig);
+    free(arrayUsuario);
+    free(arrayFutbolista);
+    free(arrayEquipo);
+    free(arrayFutP);
+    free(arrayPlantilla);
 
 
 

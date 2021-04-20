@@ -1,42 +1,57 @@
 #ifndef ADMIN_H
 #define ADMIN_H
 
-#include "Cronista.h"
 
-//#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#
-//      DECLARACIÓN DE ESTRUCTURAS
-//#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#
+//#=#=#=#=#=#=#=#=#==#=#=#=#=#=#=#=#=#=#
+//      DECLARACIï¿½N DE ESTRUCTURAS
+//#=#=#=#=#=#=#=#=#==#=#=#=#=#=#=#=#=#=#
 
-typedef struct
+typedef struct config
 {
-    char campo[20];
+    char data[31];
     int value;
-} config;
 
-typedef struct
+}config;
+
+typedef struct usuario
 {
-    char idUser[10];
+    char idUser[3];
     char nombre[21];
-    char permisos[15];
+    char perfil[14];
     char usuario[6];
     char password[9];
-} usuario;
+}usuario;
+
+typedef struct plantilla{
+    char idUsuario[3];
+    char idPlantilla[4];
+    char nombre[21];
+    int presupuesto;
+    int puntuacion;
+}plantilla;
+
+typedef struct futPlantilla {
+    char idFutbolista[3];
+    char idPlantilla[4];
+}futPlantilla;
 
 //#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#
-//      DECLARACIÓN DE FUNCIONES
+//      DECLARACIï¿½N DE FUNCIONES
 //#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#
 
-//Cabecera: void m_admin(int* n_eq, int* n_jug, int* n_us, int* n_pl, int n_con, equipos *eq, jugadores *jug, usuario *us, config *con)
-//Precondición:
-//Postcondición: Muestra las opciones de trabajo del administrador. Permite "desplazarse" a los submenús de gestión de equipos, usuarios y configuración.
-
-void m_admin(int, int*, int*, int*, int*, int, equipos**, jugadores**, usuario**, config**);
-
-//Cabecera: void anadir_us(char c, int* n_us, usuario* us)
-//Precondición: c es el indicador del origen de la llamada (gestión de usuarios o registro de usuarios). n_us es el tamaño del vector de
+//Cabecera: void anadir_us(char c, int* n_us, usuario** us)
+//Precondiciï¿½n: c es el indicador del origen de la llamada (gestiï¿½n de usuarios o registro de usuarios). n_us es el tamaï¿½o del vector de
 //              registros us, correspondientes a los usuarios.
-//Postcondición: Permite añadir un usuario.
+//Postcondiciï¿½n: Permite aï¿½adir un usuario.
 
 void anadir_us(char, int*, usuario**);
 
-#endif // ADMIN_H_INCLUDED
+//Cabecera: void m_admin(int idp, int* n_eq, int* n_jug, int* n_us, int* n_pl, int* n_fpl, int n_con, equipo** eq, futbolista** jug, usuario** us,         //INICIO DE ADMIN
+//                       plantilla** pl, futPlantilla** fpl, config** con))
+//PrecondiciÃ³n: idp es la id del usuario actual. n_eq, n_juf, n_us, n_pl, n_fpl y n_con son los tamaÃ±os de sus respectivos vectores de registros.
+//              eq, jug, us, pl, fpl y con los vectores de registros.
+//PostcondiciÃ³n: Muestra las opciones de trabajo del administrador. Permite "desplazarse" a los submenÃºs de gestiÃ³n de equipos, usuarios y configuraciÃ³n.
+
+void m_admin(int, int*, int*, int*, int*, int*, int, equipo**, futbolista**, usuario**, plantilla**, futPlantilla**, config**);
+
+#endif
