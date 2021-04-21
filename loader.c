@@ -36,12 +36,14 @@ void loadFutPlantillas(futPlantilla **dynArray, int* n ) {
 
         do {
             fgets(buffer, 100, file);
-            stringSplit(buffer, fields);
-            if (*n%50==0){
-                *dynArray=realloc((futPlantilla*)(*dynArray), (*n+50)*sizeof(futPlantilla));
+            if(strlen(buffer) > 2) {
+                stringSplit(buffer, fields);
+                if (*n % 50 == 0) {
+                    *dynArray = realloc((futPlantilla *) (*dynArray), (*n + 50) * sizeof(futPlantilla));
+                }
+                (*dynArray)[*n] = createStructFutP(fields);
+                (*n)++;
             }
-            (*dynArray)[*n]=createStructFutP(fields);
-            (*n)++;
 
         } while (!feof(file));
 
@@ -66,12 +68,14 @@ void loadConfig(config **dynArray, int *n) {
 
         do {
             fgets(buffer, 100, file);
-            stringSplit(buffer, fields);
-            if (*n%50==0){
-                *dynArray =realloc((config*)(*dynArray), (*n+10)*sizeof(config));
+            if(strlen(buffer) > 2) {
+                stringSplit(buffer, fields);
+                if (*n % 50 == 0) {
+                    *dynArray = realloc((config *) (*dynArray), (*n + 10) * sizeof(config));
+                }
+                (*dynArray)[*n] = createStructConfig(fields);
+                (*n)++;
             }
-            (*dynArray)[*n]=createStructConfig(fields);
-            (*n)++;
 
         } while (!feof(file));
 
@@ -96,12 +100,14 @@ void loadFutbolistas(futbolista **dynArray, int * n) {
 
         do {
             fgets(buffer, 1000, file);
-            stringSplit(buffer, fields);
-            if (*n%50==0){
-                *dynArray=realloc((futbolista*)(*dynArray), (*n+50)*sizeof(futbolista));
+            if(strlen(buffer) > 2) {
+                stringSplit(buffer, fields);
+                if (*n % 50 == 0) {
+                    *dynArray = realloc((futbolista *) (*dynArray), (*n + 50) * sizeof(futbolista));
+                }
+                (*dynArray)[*n] = createStructJugadores(fields);
+                (*n)++;
             }
-            (*dynArray)[*n]=createStructJugadores(fields);
-            (*n)++;
 
         } while (!feof(file));
 
@@ -127,12 +133,14 @@ void loadEquipos(equipo **dynArray, int * n) {
 
         do {
             fgets(buffer, 100, file);
-            stringSplit(buffer, fields);
-            if (*n%50==0){
-                *dynArray=realloc((equipo *)(*dynArray), (*n+50)*sizeof(equipo));
+            if(strlen(buffer) > 2) {
+                stringSplit(buffer, fields);
+                if (*n % 50 == 0) {
+                    *dynArray = realloc((equipo *) (*dynArray), (*n + 50) * sizeof(equipo));
+                }
+                (*dynArray)[*n] = createStructEquipos(fields);
+                (*n)++;
             }
-            (*dynArray)[*n]=createStructEquipos(fields);
-            (*n)++;
 
         } while (!feof(file));
 
@@ -156,12 +164,14 @@ void loadUsuario(usuario **dynArray, int * n) {
 
         do {
             fgets(buffer, 100, file);
-            stringSplit(buffer, fields);
-            if (*n%10==0){
-                *dynArray=realloc((usuario *)(*dynArray), (*n+10)*sizeof(usuario));
+            if(strlen(buffer) > 2) {
+                stringSplit(buffer, fields);
+                if (*n % 10 == 0) {
+                    *dynArray = realloc((usuario *) (*dynArray), (*n + 10) * sizeof(usuario));
+                }
+                (*dynArray)[*n] = createStructUsuarios(fields);
+                (*n)++;
             }
-            (*dynArray)[*n]=createStructUsuarios(fields);
-            (*n)++;
 
         } while (!feof(file));
 
@@ -185,12 +195,14 @@ void loadPlantilla(plantilla **dynArray, int * n) {
 
         do {
             fgets(buffer, 100, file);
-            stringSplit(buffer, fields);
-            if (*n%30==0){
-                *dynArray=realloc((plantilla *)(*dynArray), (*n+30)*sizeof(plantilla));
+            if(strlen(buffer) > 2) {
+                stringSplit(buffer, fields);
+                if (*n % 30 == 0) {
+                    *dynArray = realloc((plantilla *) (*dynArray), (*n + 30) * sizeof(plantilla));
+                }
+                (*dynArray)[*n] = createStructPlantilla(fields);
+                (*n)++;
             }
-            (*dynArray)[*n]=createStructPlantilla(fields);
-            (*n)++;
 
         } while (!feof(file));
 
@@ -397,13 +409,13 @@ void saveFutP(futPlantilla** arrayFutPlan, int nFutP){
     }
     else{
         for (int i = 0; i < nFutP - 1; ++i) {
-            if(strcmp((*arrayFutPlan)[i].idFutbolista, "\0") != 0){
+            if(strcmp((*arrayFutPlan)[i].idPlantilla, "\0") != 0){
                 fprintf(file, "%s-%s\n",
                         (*arrayFutPlan)[i].idFutbolista,
                         (*arrayFutPlan)[i].idPlantilla);
             }
         }
-        if(strcmp((*arrayFutPlan)[nFutP-1].idFutbolista, "\0") != 0){
+        if(strcmp((*arrayFutPlan)[nFutP-1].idPlantilla, "\0") != 0){
             fprintf(file, "%s-%s",
                     (*arrayFutPlan)[nFutP-1].idFutbolista,
                     (*arrayFutPlan)[nFutP-1].idPlantilla);

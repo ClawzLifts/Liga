@@ -23,11 +23,13 @@ void menuConfigurar(int *userPlantillas, plantilla** plantillas, futPlantilla** 
 
 void listJugadores(futbolista**, int*);
 void listPlantilla(futPlantilla**, int*, futbolista**);
-void addJugadores(futPlantilla**, futPlantilla*[], futbolista*[], futbolista*[], int*, int*, int*, char*);
-void deleteJugadores(futPlantilla*[], futbolista*[], futbolista*[], int*, int*);
+void addJugadores(futPlantilla **arrayFutP, futPlantilla **userFutP, futbolista **playerData, futbolista **disponibles,
+                  int *nFutP, int *nUserFutP, int *nDisponibles, char *idPlantilla, int *presupuesto);
+void deleteJugadores(futPlantilla *userFutP[], futbolista *playerData[], futbolista *disponibles[], int *nUserFutP,
+                     int *nDisponibles, int *nFutP, futPlantilla **arrayFutP);
 int selectPlantilla(futPlantilla *localFutPlant[], futPlantilla **arrayFutPlantillas, int *userPlantillas,
                     futbolista *playerData[], futbolista **futbolistas, int *nFutP, char *plantID,
-                    plantilla **arrayPlantillas);
+                    plantilla **arrayPlantillas, int input, int *presupuesto, int *puntuacion);
 int loadDisponibles(futbolista**, futbolista*[], futPlantilla*[], int*, int*);
 
 
@@ -238,32 +240,46 @@ int searchDeletedPlant(plantilla **arrayPlantilla, int *nPlantilla, int *index) 
     return 0;
 }
 
-//TODO: Check config number for maxPlayer in plantilla
 
 void menuConfigurar(int *userPlantillas, plantilla **plantillas, futPlantilla **futPlantillas, futbolista **futbolistas,
                     equipo **equipos, config** config, int *nPlantUser, int *nFutP, int *nFutbolistas, int *nEquipos) {
 
-    int input = 0;
+    int input;
+    int input2 = 0;
+    int nUserFutP;
+    int nDisponibles;
+    int* presupuesto;
+    char* idPlantilla = malloc(3* sizeof(char));
 
     futPlantilla* userFutPlant = malloc(11* sizeof(futPlantilla));
     futbolista* playerData = malloc(11 * sizeof(futbolista));
     futbolista* futDisponibles = malloc(99 * sizeof(futbolista));
 
-    char* idPlantilla = malloc(3* sizeof(char));
-    int nUserFutP = selectPlantilla(&userFutPlant, futPlantillas, userPlantillas, &playerData, futbolistas, nFutP,
-                                    idPlantilla, plantillas);
-    int nDisponibles = loadDisponibles(futbolistas, &futDisponibles, &userFutPlant, nFutbolistas, &nUserFutP);
 
-    while (input != 5) {
+    puts("Introduzca el numero de la plantilla a modificar");
+    scanf("%d", &input);
+
+    while (input > 3){
+        puts("Por favor, introduzca un identificador de plantilla valido");
+        scanf("%d", &input);
+    }
+    presupuesto = &plantillas[input]->presupuesto;
+
+    nUserFutP = selectPlantilla(&userFutPlant, futPlantillas, userPlantillas, &playerData, futbolistas, nFutP,
+                                idPlantilla, plantillas, input, presupuesto, NULL);
+    nDisponibles = loadDisponibles(futbolistas, &futDisponibles, &userFutPlant, nFutbolistas, &nUserFutP);
+
+
+    while (input2 != 5) {
 
         printf("Seleccione que operacion realizar sobre la plantilla:\n");
         puts(OPCIONES2);
-        scanf("%d", &input);
+        scanf("%d", &input2);
 
-        switch (input) {
+        switch (input2) {
             case 1: {
                 if(nUserFutP == 0){
-                    puts("La plantilla no contiene jugadores aun");
+                    puts("La plantilla no contiene jugadores aun\n");
                 }
                 else{
                     listPlantilla(&userFutPlant, &nUserFutP, &playerData);
@@ -273,7 +289,7 @@ void menuConfigurar(int *userPlantillas, plantilla **plantillas, futPlantilla **
 
             case 2: {
                 if(nUserFutP == 11){
-                    puts("Numero maximo de jugadores en esta plantilla alcanzado");
+                    puts("Numero maximo de jugadores en esta plantilla alcanzado\n");
                 }
                 else {
                     listJugadores(&futDisponibles, &nDisponibles);
@@ -284,17 +300,27 @@ void menuConfigurar(int *userPlantillas, plantilla **plantillas, futPlantilla **
 
             case 3: {
                 if(nUserFutP == 11){
-                    puts("Numero maximo de jugadores en esta plantilla alcanzado");
+                    puts("Numero maximo de jugadores en esta plantilla alcanzado\n");
                 }
                 else{
-                    addJugadores(futPlantillas, &userFutPlant, &playerData, &futDisponibles, nFutP, &nUserFutP, &nDisponibles, idPlantilla);
+                    addJugadores(futPlantillas, &userFutPlant, &playerData, &futDisponibles, nFutP, &nUserFutP,
+                                 &nDisponibles, idPlantilla, presupuesto);
                 }
             }
             break;
 
             case 4: {
-                deleteJugadores(&userFutPlant, &playerData, &futDisponibles, &nUserFutP, &nDisponibles);
-
+                if(nUserFutP == 0){
+                    puts("No existen jugadores en la plantilla.\n");
+                }
+                else {
+                    deleteJugadores(&userFutPlant, &playerData, &futDisponibles, &nUserFutP, &nDisponibles, nFutP,
+                                    futPlantillas);
+                    nUserFutP = selectPlantilla(&userFutPlant, futPlantillas, userPlantillas, &playerData, futbolistas,
+                                                nFutP,
+                                                idPlantilla, plantillas, input, NULL, NULL);
+                    nDisponibles = loadDisponibles(futbolistas, &futDisponibles, &userFutPlant, nFutbolistas, &nUserFutP);
+                }
             }
             break;
         }
@@ -305,8 +331,53 @@ void menuConfigurar(int *userPlantillas, plantilla **plantillas, futPlantilla **
     free(idPlantilla);
 }
 
+void addJugadores(futPlantilla **arrayFutP, futPlantilla **userFutP, futbolista **playerData, futbolista **disponibles,
+                  int *nFutP, int *nUserFutP, int *nDisponibles, char *idPlantilla, int *presupuesto) {
 
-void deleteJugadores(futPlantilla* userFutP[], futbolista* playerData[], futbolista* disponibles[], int* nUserFutP, int* nDisponibles){
+    int input = 0;
+    int input2 = 0;
+    do {
+        puts("Por favor, seleccione de la lista el identificador de jugador a añadir:\n");
+        listJugadores(disponibles, nDisponibles);
+        scanf("%d", &input);
+
+        while (input >= (*nDisponibles)){
+            puts("Por favor, introduzca un identificador de jugador válido (Formato de ejemplo: 2");
+            scanf("%d", &input);
+        }
+        if((presupuesto - (*disponibles)[input].precio) > 0) {
+
+            if (!(*nFutP) % 50) {
+                (*arrayFutP) = (futPlantilla *) realloc((*arrayFutP), ((*nFutP) + 50) * sizeof(futPlantilla));
+            }
+
+            futPlantilla newFutPlan;
+            strcpy(newFutPlan.idFutbolista, (*disponibles)[input].idFutbolista),
+                    strcpy(newFutPlan.idPlantilla, idPlantilla);
+
+            (*arrayFutP)[(*nFutP)] = newFutPlan;
+            (*userFutP)[(*nUserFutP)] = (*arrayFutP)[(*nFutP)];
+            (*playerData)[(*nUserFutP)] = (*disponibles)[input];
+            strcpy((*disponibles)[input].nombre, "NULL");
+
+            presupuesto = presupuesto - (*disponibles)[input].precio;
+            (*nUserFutP)++;
+            (*nFutP)++;
+        }
+        else
+            puts("Presupuesto máximo excedido, imposible añadir usuario");
+
+        puts("Desea añadir otro jugador?\n0 - Yes\n1 - No");
+        scanf("%d", &input2);
+    }
+    while(input2 == 0);
+}
+
+
+void deleteJugadores(futPlantilla *userFutP[], futbolista *playerData[], futbolista *disponibles[], int *nUserFutP,
+                     int *nDisponibles, int *nFutP, futPlantilla **arrayFutP) {
+
+    int input = 0;
 
     puts("Por favor, seleccione el jugador a eliminar de la plantilla");
 
@@ -314,7 +385,6 @@ void deleteJugadores(futPlantilla* userFutP[], futbolista* playerData[], futboli
         printf("[%d] %s-%s\n", i, (*userFutP)[i].idFutbolista, (*playerData)[i].nombre);
     }
 
-    int input = 0;
 
     scanf("%d", &input);
     while (input >= (*nDisponibles)){
@@ -322,44 +392,14 @@ void deleteJugadores(futPlantilla* userFutP[], futbolista* playerData[], futboli
         scanf("%d", &input);
     }
 
-    if((*nDisponibles) > 99){
-        int found = 0;
-        for (int i = 0; i < ((*nDisponibles)) && found == 0; ++i) {
-            if(disponibles[i] == NULL){
-                (*disponibles)[i] = (*playerData)[input];
-                found = 1;
-            }
+    for (int i = 0; i < (*nFutP); ++i) {
+
+        if(strcmp((*userFutP)[input].idFutbolista, (*arrayFutP)[i].idFutbolista) == 0  && strcmp((*userFutP)[input].idPlantilla, (*arrayFutP)[i].idPlantilla) == 0 ){
+            strcpy((*arrayFutP)[i].idPlantilla, "\0");
         }
     }
-    else{
-        (*disponibles)[(*nDisponibles)] = (*playerData)[input];
-        (*nDisponibles)++;
-    }
-    strcpy((*userFutP)[input].idPlantilla, "\0");
-    playerData[input] = NULL;
 }
 
-
-int loadDisponibles(futbolista **arrayFut, futbolista **disponibles, futPlantilla **userFutPlant, int *nFutbolistas, int *nUserFutP) {
-    int counter = 0;
-    int temp = 0;
-
-    for (int i = 0; i < (*nFutbolistas); ++i) {
-        int exist = 0;
-
-        for (int j = 0; j < (*nUserFutP) && temp<(*nUserFutP); ++j) {
-            if(!strcmp((*arrayFut)[i].idFutbolista, (*userFutPlant)[j].idFutbolista)){
-                exist = 1;
-                temp++;
-            }
-        }
-        if(exist == 0){
-            (*disponibles)[counter] = (*arrayFut)[i];
-            counter++;
-        }
-    }
-    return counter;
-}
 
 void listJugadores(futbolista** futDisponibles, int* nDisponibles) {
 
@@ -382,17 +422,9 @@ void listPlantilla(futPlantilla** futbolistasP, int* nFutPlant, futbolista** pla
 
 int selectPlantilla(futPlantilla *localFutPlant[], futPlantilla **arrayFutPlantillas, int *userPlantillas,
                     futbolista *playerData[], futbolista **futbolistas, int *nFutP, char *plantID,
-                    plantilla **arrayPlantillas) {
-    int input;
+                    plantilla **arrayPlantillas, int input, int *presupuesto, int *puntuacion) {
     int nFutPlant = 0;
 
-    puts("Introduzca el numero de la plantilla a modificar");
-    scanf("%d", &input);
-
-    while (input > 3){
-        puts("Por favor, introduzca un identificador de plantilla valido");
-        scanf("%d", &input);
-    }
     for (int i = 0; i < (*nFutP); ++i) {
         if(strcmp((*arrayFutPlantillas)[i].idPlantilla, (*arrayPlantillas)[userPlantillas[input]].idPlantilla) == 0){
             (*localFutPlant)[nFutPlant] = (*arrayFutPlantillas)[i];
@@ -406,6 +438,8 @@ int selectPlantilla(futPlantilla *localFutPlant[], futPlantilla **arrayFutPlanti
         do {
             if (!strcmp((*localFutPlant)[j].idFutbolista, (*futbolistas)[counter].idFutbolista)) {
                 (*playerData)[j] = (*futbolistas)[counter];
+                presupuesto = presupuesto - (*playerData)[j].precio;
+                puntuacion = puntuacion + (*playerData)[j].puntuacion;
             }
             counter++;
 
@@ -415,42 +449,28 @@ int selectPlantilla(futPlantilla *localFutPlant[], futPlantilla **arrayFutPlanti
     return nFutPlant;
 }
 
-void addJugadores(futPlantilla **arrayFutP, futPlantilla **userFutP, futbolista **playerData, futbolista **disponibles,
-                  int *nFutP, int *nUserFutP, int *nDisponibles, char *idPlantilla) {
+int loadDisponibles(futbolista **arrayFut, futbolista **disponibles, futPlantilla **userFutPlant, int *nFutbolistas, int *nUserFutP) {
+    int counter = 0;
+    int temp = 0;
 
-    int input = 0;
-    int input2 = 0;
-    do {
-        puts("Por favor, seleccione de la lista el identificador de jugador a añadir:\n");
-        listJugadores(disponibles, nDisponibles);
-        scanf("%d", &input);
+    for (int i = 0; i < (*nFutbolistas); ++i) {
+        int exist = 0;
 
-        while (input >= (*nDisponibles)){
-            puts("Por favor, introduzca un identificador de jugador válido (Formato de ejemplo: 2");
-            scanf("%d", &input);
+        for (int j = 0; j < (*nUserFutP) && temp<(*nUserFutP); ++j) {
+            if(!strcmp((*arrayFut)[i].idFutbolista, (*userFutPlant)[j].idFutbolista)){
+                exist = 1;
+                temp++;
+            }
         }
-
-        if(!(*nFutP) % 50){
-            (*arrayFutP) = (futPlantilla*) realloc((*arrayFutP), ((*nFutP)+50) * sizeof(futPlantilla));
+        if(exist == 0){
+            (*disponibles)[counter] = (*arrayFut)[i];
+            counter++;
         }
-
-        futPlantilla newFutPlan;
-        strcpy(newFutPlan.idFutbolista, (*disponibles)[input].idFutbolista),
-        strcpy(newFutPlan.idPlantilla, idPlantilla);
-
-        (*arrayFutP)[(*nFutP)] = newFutPlan;
-        (*userFutP)[(*nUserFutP)] = (*arrayFutP)[(*nFutP)];
-        (*playerData)[(*nUserFutP)] = (*disponibles)[input];
-        strcpy((*disponibles)[input].nombre, "NULL") ;
-
-        (*nUserFutP)++;
-        (*nFutP)++;
-
-        puts("Desea añadir otro jugador?\n0 - Yes\n1 - No");
-        scanf("%d", &input2);
     }
-    while(input2 == 0);
+    return counter;
 }
+
+
 
 
 
