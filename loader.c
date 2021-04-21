@@ -284,4 +284,161 @@ equipo createStructEquipos(char* array[]) {
 }
 
 
+void saveConfig(config** arrayConfig, int nConfig){
+    FILE* file;
+    file = fopen("DATA/Configuracion.txt", "w");
+    if(file == NULL){
+        puts("Error al abrir el archivo Configuracion.txt");
+    }
+    else{
+        for (int i = 0; i < nConfig - 1; ++i) {
+            if(strcmp((*arrayConfig)[i].data, "\0") != 0){
+                fprintf(file, "%s-%d\n",
+                        (*arrayConfig)[i].data,
+                        (*arrayConfig)[i].value);
+            }
+        }
+        if(strcmp((*arrayConfig)[nConfig-1].data, "\0") != 0){
+            fprintf(file, "%s-%d",
+                    (*arrayConfig)[nConfig-1].data,
+                    (*arrayConfig)[nConfig-1].value);
+        }
+    }
+}
+
+void saveEquipos(equipo** arrayEquipos, int nEquipos){
+    FILE* file;
+    file = fopen("DATA/Equipos.txt", "w");
+    if(file == NULL){
+        puts("Error al abrir el archivo Equipos.txt");
+    }
+    else{
+        for (int i = 0; i < nEquipos - 1; ++i) {
+            if(strcmp((*arrayEquipos)[i].idEquipo, "\0") != 0){
+                fprintf(file, "%s-%s\n",
+                        (*arrayEquipos)[i].idEquipo,
+                        (*arrayEquipos)[i].nombreEquipo);
+            }
+        }
+        if(strcmp((*arrayEquipos)[nEquipos-1].idEquipo, "\0") != 0){
+            fprintf(file, "%s-%s",
+                    (*arrayEquipos)[nEquipos-1].idEquipo,
+                    (*arrayEquipos)[nEquipos-1].nombreEquipo);
+        }
+    }
+}
+
+void saveFutbolistas(futbolista** arrayFutbolistas, int nFutbolistas){
+    FILE *file;
+    file = fopen("DATA/Futbolistas.txt", "w");
+    if(file == NULL){
+        puts("Error al abrir el archivo Futbolistas.txt");
+    }
+    else{
+        for (int i = 0; i < nFutbolistas-1; ++i) {
+            if(strcmp((*arrayFutbolistas)[i].idFutbolista, "\0") != 0) {
+                fprintf(file, "%s-%s-%s-%d-%d\n",
+                        (*arrayFutbolistas)[i].idFutbolista,
+                        (*arrayFutbolistas)[i].idEquipo,
+                        (*arrayFutbolistas)[i].nombre,
+                        (*arrayFutbolistas)[i].precio,
+                        (*arrayFutbolistas)[i].puntuacion);
+            }
+        }
+        if(strcmp((*arrayFutbolistas)[nFutbolistas-1].idFutbolista, "\0") != 0) {
+            fprintf(file, "%s-%s-%s-%d-%d",
+                    (*arrayFutbolistas)[nFutbolistas-1].idFutbolista,
+                    (*arrayFutbolistas)[nFutbolistas-1].idEquipo,
+                    (*arrayFutbolistas)[nFutbolistas-1].nombre,
+                    (*arrayFutbolistas)[nFutbolistas-1].precio,
+                    (*arrayFutbolistas)[nFutbolistas-1].puntuacion);
+        }
+    }
+    fclose(file);
+
+
+}
+
+void savePlantillas(plantilla** arrayPlantillas, int nPlantillas){
+
+    FILE *file;
+    file = fopen("DATA/Plantillas.txt", "w");
+    if(file == NULL){
+        puts("Error al abrir el archivo Plantillas.txt");
+    }
+    else{
+        for (int i = 0; i < nPlantillas-1; ++i) {
+            if(strcmp((*arrayPlantillas)[i].idUsuario, "\0") != 0) {
+                fprintf(file, "%s-%s-%s-%d-%d\n",
+                        (*arrayPlantillas)[i].idUsuario,
+                        (*arrayPlantillas)[i].idPlantilla,
+                        (*arrayPlantillas)[i].nombre,
+                        (*arrayPlantillas)[i].presupuesto,
+                        (*arrayPlantillas)[i].puntuacion);
+            }
+        }
+        if(strcmp((*arrayPlantillas)[nPlantillas-1].idUsuario, "\0") != 0) {
+            fprintf(file, "%s-%s-%s-%d-%d",
+                    (*arrayPlantillas)[nPlantillas-1].idUsuario,
+                    (*arrayPlantillas)[nPlantillas-1].idPlantilla,
+                    (*arrayPlantillas)[nPlantillas-1].nombre,
+                    (*arrayPlantillas)[nPlantillas-1].presupuesto,
+                    (*arrayPlantillas)[nPlantillas-1].puntuacion);
+        }
+    }
+    fclose(file);
+}
+
+void saveFutP(futPlantilla** arrayFutPlan, int nFutP){
+    FILE* file;
+    file = fopen("DATA/Futbolistas_Plantillas.txt", "w");
+    if(file == NULL){
+        puts("Error al abrir el archivo Futbolistas_Plantillas.txt");
+    }
+    else{
+        for (int i = 0; i < nFutP - 1; ++i) {
+            if(strcmp((*arrayFutPlan)[i].idFutbolista, "\0") != 0){
+                fprintf(file, "%s-%s\n",
+                        (*arrayFutPlan)[i].idFutbolista,
+                        (*arrayFutPlan)[i].idPlantilla);
+            }
+        }
+        if(strcmp((*arrayFutPlan)[nFutP-1].idFutbolista, "\0") != 0){
+            fprintf(file, "%s-%s",
+                    (*arrayFutPlan)[nFutP-1].idFutbolista,
+                    (*arrayFutPlan)[nFutP-1].idPlantilla);
+        }
+    }
+}
+
+void saveUsuarios(usuario** arrayUsuarios, int nUsuarios){
+    FILE *file;
+    file = fopen("DATA/Usuarios.txt", "w");
+    if(file == NULL){
+        puts("Error al abrir el archivo Usuarios.txt");
+    }
+    else{
+        for (int i = 0; i < nUsuarios-1; ++i) {
+            if(strcmp((*arrayUsuarios)[i].idUser, "\0") != 0) {
+                fprintf(file, "%s-%s-%s-%s-%s\n",
+                        (*arrayUsuarios)[i].idUser,
+                        (*arrayUsuarios)[i].nombre,
+                        (*arrayUsuarios)[i].perfil,
+                        (*arrayUsuarios)[i].usuario,
+                        (*arrayUsuarios)[i].password);
+            }
+        }
+        if(strcmp((*arrayUsuarios)[nUsuarios-1].idUser, "\0") != 0) {
+            fprintf(file, "%s-%s-%s-%s-%s",
+                    (*arrayUsuarios)[nUsuarios-1].idUser,
+                    (*arrayUsuarios)[nUsuarios-1].nombre,
+                    (*arrayUsuarios)[nUsuarios-1].perfil,
+                    (*arrayUsuarios)[nUsuarios-1].usuario,
+                    (*arrayUsuarios)[nUsuarios-1].password);
+        }
+    }
+    fclose(file);
+
+}
+
 

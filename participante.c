@@ -31,6 +31,7 @@ int loadDisponibles(futbolista**, futbolista*[], futPlantilla*[], int*, int*);
 void menuParticipante(char *userID, char *userName, config **config, futbolista **futbolistas, equipo **equipos,
                       plantilla **plantillas, futPlantilla **futPlantillas, int* nPlant, int* nFut, int* nEquipo, int* nFutP) {
 
+    puts(userID);
     int input = 0;
     int nPlantUser = 0;
     int deletedPlant = 0;
@@ -108,20 +109,15 @@ void menuParticipante(char *userID, char *userName, config **config, futbolista 
 
 int loadPlantillas(char* userID, plantilla** arrayPlantilla, plantilla** userArray, int* nPlant){
 
-    int count = 0;
-    int countUser = 0;
+    int nPlantUser = 0;
 
-    while(count <= (*nPlant)){
-
-        if( strcmp((*arrayPlantilla)[count].idUsuario, userID) == 0){
-            userArray[countUser] = arrayPlantilla[count];
-            countUser++;
-            count++;
+    for (int i = 0; i < (*nPlant); ++i) {
+        if(strcmp((*arrayPlantilla)[i].idUsuario, userID) == 0){
+            userArray[nPlantUser] = arrayPlantilla[i];
         }
-        else
-            count++;
     }
-    return countUser;
+
+    return nPlantUser;
 }
 
 
@@ -182,11 +178,13 @@ void nuevaPlantilla( plantilla** plantillas, plantilla** userPlantillas, int* nP
         newPlant.puntuacion = 0;
 
         (*plantillas)[(*nPlant)] = newPlant;
-        userPlantillas[(*nPlantUser)] = (plantillas[(*nPlant)]);
+        userPlantillas[(*nPlantUser)] = plantillas[(*nPlant)];
 
         printf("Plantilla %s creada satisfactoriamente.\n", (*userPlantillas)[(*nPlantUser)].nombre);
 
         (*nPlantUser)++;
+        printf("%d %s %s %s", (*nPlantUser), (*plantillas)[(*nPlant)].idUsuario, (*plantillas)[(*nPlant)].idPlantilla, (*plantillas)[(*nPlant)].nombre);
+
         (*nPlant)++;
 
     }

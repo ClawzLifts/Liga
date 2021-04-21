@@ -14,4 +14,11 @@ void loadPlantilla(plantilla**, int*);
 
 void stringSplit(char* , char*[]);
 
+void savePlantillas(plantilla**, int);
+void saveFutbolistas(futbolista**, int);
+void saveConfig(config**, int) ;
+void saveFutP(futPlantilla**, int);
+void saveEquipos(equipo**, int);
+void saveUsuarios(usuario**, int);
+
 #endif //LIGA_LOADER_H

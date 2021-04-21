@@ -2,7 +2,6 @@
 // Created by Clawz on 06/04/2021.
 //
 #include <stdlib.h>
-#include <stdio.h>
 #include "Cronista.h"
 #include "Admin.h"
 #include "loader.h"
@@ -34,6 +33,14 @@ int main() {
 
     loginres(&nEquipo, &nFutbolista, &nUsuario, &nPlantilla, &nFutP, nConfig, &arrayEquipo, &arrayFutbolista,
              &arrayUsuario, &arrayPlantilla, &arrayFutP, &arrayConfig);
+
+    savePlantillas(&arrayPlantilla,nPlantilla);
+    saveFutbolistas(&arrayFutbolista, nFutbolista);
+    saveConfig(&arrayConfig, nConfig);
+    saveUsuarios(&arrayUsuario, nUsuario);
+    saveEquipos(&arrayEquipo, nEquipo);
+    saveFutP(&arrayFutP, nFutP);
+
 
     free(arrayConfig);
     free(arrayUsuario);

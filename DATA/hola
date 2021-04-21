@@ -11,3 +11,9 @@
 
                         loginres(&nEquipo, &nFutbolista, &nUsuario, &nPlantilla, &nFutP, nConfig, &arrayEquipo, &arrayFutbolista,
                             &arrayUsuario, &arrayPlantilla, &arrayFutP, &arrayConfig);
+
+
+
+
+                            fprintf(file, "%s-%s-%s-%d-%d\n",(*arrayPlantillas)[i].idUsuario, (*arrayPlantillas)[i].idPlantilla,
+                                                    (*arrayPlantillas)[i].nombre, (*arrayPlantillas)[i].presupuesto, (*arrayPlantillas)[i].puntuacion);

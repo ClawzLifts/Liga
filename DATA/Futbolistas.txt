@@ -1,99 +1,99 @@
 01-01-Joselu-4-0
 02-01-Lucas Perez-6-0
-03-01-Deyverson-3,5-0
-04-01-Facundo Pellistri-7-0
-05-01-Guidetti-1,2-0
-06-01-Rioja-2-0
-07-01-Battaglia-4-0
-08-01-Tomas Pina-1,2-0
-09-01-Edgar Mendez-2-0
-10-01-Jota Peleteiro-2-0
-11-01-Pere Pons-2,8-0
-12-01-Borja Sainz-2,5-0
-13-01-Manu Garcia-0,8-0
-14-01-Cordoba-2,5-0
-15-01-Abdallahi Mahmoud-0,1-0
-16-01-Burgui-0,8-0
-17-01-Sergi Garcia-0,1-0
-18-01-Ruben Duarte-4,5-0
-19-01-Ximo Navarro-2-0
-20-01-Lejeune-4,2-0
-21-01-Laguardia-5-0
-22-01-Aguirregabiria-3-0
-23-01-Tachi-0,8-0
-24-01-Rodrigo Ely-2,5-0
-25-01-Javi Lopez-0,6-0
-26-01-Pacheco-14-0
-27-01-Sivera-0,9-0
-28-02-Williams-25-0
-29-02-Raul Garcia-3,5-0
-30-02-Villalibre-3,5-0
-31-02-Inigo Vicente-1-0
-32-02-Muniain-14-0
-33-02-Berenguer-10-0
-34-02-Dani Garcia-4-0
-35-02-Unai Lopez-10-0
-36-02-Vesga-2-0
-37-02-Vencedor-1,8-0
-38-02-Morcillo-2,5-0
-39-02-Sancet-3,5-0
-40-02-Oier Zarraga-0,5-0
-41-02-Ibai Gomez-1,5-0
-42-02-Yuri-16-0
-43-02-Capa-7-0
-44-02-Inigo Martinez-25-0
-45-03-Yeray-20-0
-46-02-Unai Nunez-20-0
-47-02-De Marcos-2,5-0
-48-02-Balenziaga-1,2-0
-49-02-Lekue-1,5-0
-50-02-Nolaskoain-3,5-0
-51-02-Unai Simon-30-0
-52-02-Herrerin-1,8-0
-53-02-Ezkieta-0,3-0
-54-03-Suarez-15-0
-55-03-Angel Correa-40-0
-56-03-Joao Felix-100-0
-57-03-Moussa Dembélé-30-0
-58-03-Marcos Llorente-50-0
-59-03-Koke-60-0
-60-03-Lemar-20-0
-61-03-Carrasco-30-0
-62-03-Saul-60-50
-63-03-Kondogbia-15-0
-64-03-Torreira-28-0
-65-03-Hector Herrera-8-0
-66-03-Vitolo-8-0
-67-03-Hermoso-30-0
-68-03-Trippier-20-0
-69-03-Savic-25-0
-70-03-Felipe-20-0
-71-03-Lodi-40-0
-72-03-Gimenez-65-0
-73-03-Vrsaljko-8-0
-74-03-Oblak-90-0
-75-03-Grbic-7-0
-76-04-Messi-80-0
-77-04-Griezmann-60-0
-78-04-Dembele-50-0
-79-04-Brathwaite-9-0
-80-04-Ansu Fati-80-0
-81-04-Trincao-25-0
-82-04-Frenkie de Jong-65-0
-83-04-Pedri-50-0
-84-04-Busquets-10-0
-85-04-Coutinho-50-0
-86-04-Pjanic-40-0
-87-04-Riqui Puig-18-0
-88-04-Matheus Fernandes-2-0
-89-04-Jordi Alba-25-0
-90-04-Dest-25-0
-91-04-Mingueza-5-0
-92-04-Lenglet-40-0
-93-04-Ronald Araujo-20-0
-94-04-Pique-12-0
-95-04-Sergi Roberto-25-0
-96-04-Umtiti-10-0
-97-04-Junior Firpo-10-0
-98-04-Ter Stegen-75-0
-99-04-Neto-10-0
+03-01-Rioja-2-0
+04-01-Ruben Duarte-4-5
+05-01-Pacheco-14-0
+06-02-Williams-25-0
+07-02-Raul Garcia-3-5
+08-02-Muniain-14-0
+09-02-Inigo Martinez-25-0
+10-02-Unai Simon-30-0
+11-03-Suarez-15-0
+12-03-Joao Felix-100-0
+13-03-Marcos Llorente-50-0
+14-03-Trippier-20-0
+15-03-Oblak-90-0
+16-04-Messi-80-0
+17-04-Ansu Fati-80-0
+18-04-Frenkie de Jong-65-0
+19-04-Pedri-50-0
+20-04-Ronald Araujo-20-0
+21-04-Pique-12-0
+22-04-Ter Stegen-75-0
+23-05-Borja Iglesias-7-0
+24-05-Fekir-25-0
+25-05-Canales-20-0
+26-05-Emerson-20-0
+27-05-Joel Robles-4-0
+28-06-Negredo-1-2
+29-06-Alex Fernandez-7-0
+30-06-Jonsson-1-8
+31-06-Pacha Espino-2-0
+32-06-Ledesma-3-0
+33-07-Iago Aspas-10-0
+34-07-Renato Tapia-10-0
+35-07-Denis Suarez-10-0
+36-07-Hugo Mallo-5-0
+37-07-Ruben Blanco-7-0
+38-08-Kike Garcia-2-0
+39-08-Bryan Gil-15-0
+40-08-Pozo-5-0
+41-08-Dmitrovic-10-0
+42-09-Tete Morente-1-5
+43-09-Fidel-1-5
+44-09-Gonzalo Verdu-0-8
+45-09-Edgar Badia-1-5
+46-10-Cucho-12-0
+47-10-Cucurella-20-0
+48-10-Alena-15-0
+49-10-Djene-25-0
+50-10-David Soria-9-0
+51-11-Darwin Machis-10-0
+52-11-Kenedy-8-0
+53-11-Yangel Herrera-15-0
+54-11-Foulquier-3-0
+55-11-Rui Silva-10-0
+56-12-Rafa Mir-5-5
+57-12-Ferreiro-1-0
+58-12-Javi Galan-3-5
+59-12-Alvaro Fernandez-3-0
+60-13-Roger-8-0
+61-13-Campana-22-0
+62-13-Bardhi-18-0
+63-13-Clerc-2-0
+64-13-Aitor Fernandez-8-0
+65-14-Chimy avila-10-0
+66-14-Ruben Garcia-10-0
+67-14-Moncayola-3-0
+68-14-Nacho Vidal-2-0
+69-14-Sergio Herrera-1-8
+70-15-Hazard-50-0
+71-15-Lucas Vazquez-15-0
+72-15-Varane-70-0
+73-15-Sergio Ramos-14-0
+74-15-Courtois-75-0
+75-16-Oyarzabal-70-0
+76-16-Mikel Merino-40-0
+77-16-Gorosabel-10-0
+78-16-Le Normand-20-0
+79-16-Remiro-20-0
+80-17-Weissman-6-0
+81-17-Orellana-1-5
+82-17-Roque Mesa-3-0
+83-17-Olaza-6-0
+84-17-Masip-2-8
+85-18-Ocampos-45-0
+86-18-Papu Gomez-15-0
+87-18-Kounde-50-0
+88-18-Diego Carlos-50-0
+89-18-Bono-15-0
+90-19-Maxi Gomez-32-0
+91-19-Carlos Soler-35-0
+92-19-Gaya-35-0
+93-19-Gabriel Paulista-15-0
+94-19-Jaume Domenech-6-0
+95-20-Gerard Moreno-30-0
+96-20-Alcacer-25-0
+97-20-Chukwueze-20-0
+98-20-Pau Torres-50-0
+99-20-Asenjo-10-0
