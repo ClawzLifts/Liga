@@ -13,7 +13,7 @@
 
 int main() {
 
-    config *arrayConfig = (config*)malloc(10* sizeof(config));
+    config *arrayConfig = (config*) malloc(10* sizeof(config));
     usuario *arrayUsuario = (usuario*)malloc(10* sizeof(usuario));
     futbolista *arrayFutbolista = (futbolista*)malloc(50* sizeof(futbolista));
     equipo *arrayEquipo = (equipo*)malloc(50* sizeof(equipo));
@@ -35,10 +35,10 @@ int main() {
              &arrayUsuario, &arrayPlantilla, &arrayFutP, &arrayConfig);
 
     savePlantillas(&arrayPlantilla,nPlantilla);
-    saveFutbolistas(&arrayFutbolista, nFutbolista);
-    saveConfig(&arrayConfig, nConfig);
-    saveUsuarios(&arrayUsuario, nUsuario);
-    saveEquipos(&arrayEquipo, nEquipo);
+    //saveFutbolistas(&arrayFutbolista, nFutbolista);
+    //saveConfig(&arrayConfig, nConfig);
+    //saveUsuarios(&arrayUsuario, nUsuario);
+    //saveEquipos(&arrayEquipo, nEquipo);
     saveFutP(&arrayFutP, nFutP);
 
 
