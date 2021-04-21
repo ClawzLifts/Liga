@@ -10,21 +10,24 @@
 #define OPCIONES1 "1 -Crear plantilla\n2 -Configurar plantillas\n3 -Listar plantillas\n4 -Eliminar plantilla\n5 -Ranking\n6 -Salir\n"
 #define OPCIONES2 "1 -Listar jugadores en plantilla\n2 -Listar jugadores disponibles\n3 -Anadir jugador a plantilla\n4 -Eliminar jugador\n5 -Volver\n"
 
-int loadPlantillas(char*, plantilla**,  plantilla**, int*);
-void listaPlantilla(int* , plantilla** );
-void eliminarPlantilla(futPlantilla **futPlantillas, plantilla **userPlantillas, int *nFutP, int *nPlantUser);
-int searchDeletedPlant(plantilla **arrayPlantilla, int *nPlantilla, int *index);
-void nuevaPlantilla(plantilla **plantillas, plantilla **userPlantillas, config **config, int *nPlant, int *nPlantUser,
+int loadPlantillas(char *userID, plantilla **arrayPlantilla, int *userArray, int *nPlant);
+void listaPlantilla(plantilla **plantillas, int *nPlantUser, int *userArray);
+void eliminarPlantilla(futPlantilla **futPlantillas, plantilla **plantillas, int *userPlantilla, int *nFutP,
+                       int *nPlantUser);
+int searchDeletedPlant(plantilla **, int *nPlantilla, int *index);
+void nuevaPlantilla(plantilla **plantillas, config **config, int *userPlantillas, int *nPlant, int *nPlantUser,
                     char *userID);
 
-void menuConfigurar(plantilla** userPlantillas, plantilla** plantillas, futPlantilla** futPlantilla, futbolista ** futbolistas, equipo** equipos, config**,
+void menuConfigurar(int *userPlantillas, plantilla** plantillas, futPlantilla** futPlantillas, futbolista ** futbolistas, equipo** equipos, config **config,
                     int* nPlantUser, int* nFutP, int* nFutbolistas, int* nEquipos);
 
 void listJugadores(futbolista**, int*);
 void listPlantilla(futPlantilla**, int*, futbolista**);
 void addJugadores(futPlantilla**, futPlantilla*[], futbolista*[], futbolista*[], int*, int*, int*, char*);
 void deleteJugadores(futPlantilla*[], futbolista*[], futbolista*[], int*, int*);
-int selectPlantilla(futPlantilla *[], futPlantilla**, plantilla**, futbolista*[], futbolista**, int*, char*);
+int selectPlantilla(futPlantilla *localFutPlant[], futPlantilla **arrayFutPlantillas, int *userPlantillas,
+                    futbolista *playerData[], futbolista **futbolistas, int *nFutP, char *plantID,
+                    plantilla **arrayPlantillas);
 int loadDisponibles(futbolista**, futbolista*[], futPlantilla*[], int*, int*);
 
 
@@ -35,9 +38,8 @@ void menuParticipante(char *userID, char *userName, config **config, futbolista 
 
     int input = 0;
     int nPlantUser = 0;
-    int deletedPlant = 0;
 
-    plantilla* userPlantillas[3];
+    int userPlantillas[3];
 
     nPlantUser = loadPlantillas(userID, plantillas, userPlantillas, nPlant);
 
@@ -54,7 +56,7 @@ void menuParticipante(char *userID, char *userName, config **config, futbolista 
 
                 if (nPlantUser < 3) {
 
-                    nuevaPlantilla(plantillas, userPlantillas, NULL, nPlant, &nPlantUser, userID);
+                    nuevaPlantilla(plantillas, config, userPlantillas, nPlant, &nPlantUser, userID);
 
                 } else puts("Ha alcanzado el número maximo de plantillas. Elimine una antes de continuar\n");
             }
@@ -63,7 +65,7 @@ void menuParticipante(char *userID, char *userName, config **config, futbolista 
             case 2:{
 
                 if (nPlantUser != 0){
-                    listaPlantilla(&nPlantUser, userPlantillas);
+                    listaPlantilla(plantillas, &nPlantUser, userPlantillas);
                     menuConfigurar(userPlantillas, plantillas, futPlantillas, futbolistas, equipos, config, &nPlantUser, nFutP, nFut, nEquipo);
                 }
                 else
@@ -77,7 +79,7 @@ void menuParticipante(char *userID, char *userName, config **config, futbolista 
                     puts("No posee ninguna plantilla, por favor, cree una.\n");
                 }
                 else {
-                    listaPlantilla(&nPlantUser, userPlantillas);
+                    listaPlantilla(plantillas, &nPlantUser, userPlantillas);
                 }
             }
             break;
@@ -88,7 +90,7 @@ void menuParticipante(char *userID, char *userName, config **config, futbolista 
                     puts("No posee ninguna plantilla, por favor, cree una.\n");
                 }
                 else {
-                    eliminarPlantilla(futPlantillas, userPlantillas, nFutP, &nPlantUser);
+                    eliminarPlantilla(futPlantillas, plantillas, userPlantillas, nFutP, &nPlantUser);
                     nPlantUser = loadPlantillas(userID, plantillas, userPlantillas, nPlant);
 
                 }
@@ -101,20 +103,20 @@ void menuParticipante(char *userID, char *userName, config **config, futbolista 
 
             }
             break;
-
         }
     }
 }
 
 
-int loadPlantillas(char* userID, plantilla** arrayPlantilla, plantilla** userArray, int* nPlant){
+int loadPlantillas(char* userID, plantilla** arrayPlantilla, int *userArray, int* nPlant){
 
     int nPlantUser = 0;
 
     for (int i = 0; i < (*nPlant); ++i) {
 
         if(strcmp((*arrayPlantilla)[i].idUsuario, userID) == 0){
-            userArray[nPlantUser] = arrayPlantilla[i];
+            userArray[nPlantUser] = i;
+
             nPlantUser++;
         }
     }
@@ -123,26 +125,27 @@ int loadPlantillas(char* userID, plantilla** arrayPlantilla, plantilla** userArr
 }
 
 
-void listaPlantilla(int *nPlantUser, plantilla** userPlantillas) {
+void listaPlantilla(plantilla **plantillas, int *nPlantUser, int *userArray) {
 
     puts("Sus plantillas son:\n");
 
     for (int i = 0; i < (*nPlantUser); ++i) {
 
-        printf("%d - %s-%s - Puntuacion: %d\n", i, (*userPlantillas)[i].idPlantilla, (*userPlantillas)[i].nombre,
-               (*userPlantillas)[i].puntuacion);
+        printf("[%d] - %s-%s - Puntuacion: %d\n", i,
+               (*plantillas)[userArray[i]].idPlantilla,
+               (*plantillas)[userArray[i]].nombre,
+               (*plantillas)[userArray[i]].puntuacion);
     }
 }
 
-void nuevaPlantilla(plantilla **plantillas, plantilla **userPlantillas, config **config, int *nPlant, int *nPlantUser,
+void nuevaPlantilla(plantilla **plantillas, config **config, int *userPlantillas, int *nPlant, int *nPlantUser,
                     char *userID) {
 
 
     int index = 0;
-    int found = 0;
-    found = searchDeletedPlant(userPlantillas, nPlant, &index);
+    int found = searchDeletedPlant(plantillas, nPlant, &index);
 
-    if(found != 0){
+    if(found == 1){
         char nombre[21];
 
         puts("Introduzca el nombre de la plantilla a crear (max. 20 caracteres)");
@@ -153,11 +156,11 @@ void nuevaPlantilla(plantilla **plantillas, plantilla **userPlantillas, config *
         }
 
         strcpy((*plantillas)[index].idUsuario, userID);
-        strcpy((*plantillas)[index].idUsuario, userID);
+        strcpy((*plantillas)[index].nombre, nombre);
         (*plantillas)[index].presupuesto = 90;
         (*plantillas)[index].puntuacion = 0;
 
-        userPlantillas[(*nPlantUser)] = plantillas[index];
+        userPlantillas[(*nPlantUser)] = index;
         (*nPlantUser)++;
 
 
@@ -187,45 +190,58 @@ void nuevaPlantilla(plantilla **plantillas, plantilla **userPlantillas, config *
         newPlant.puntuacion = 0;
 
         (*plantillas)[(*nPlant)] = newPlant;
-        userPlantillas[(*nPlantUser)] = plantillas[(*nPlant)];
+        userPlantillas[(*nPlantUser)] = (*nPlant);
 
-        printf("Plantilla %s creada satisfactoriamente.\n", (*userPlantillas)[(*nPlantUser)].nombre);
+        printf("Plantilla %s creada satisfactoriamente.\n", (*plantillas)[(*nPlant)].nombre);
 
         (*nPlantUser)++;
-        printf("%d %s %s %s", (*nPlantUser), (*plantillas)[(*nPlant)].idUsuario, (*plantillas)[(*nPlant)].idPlantilla, (*plantillas)[(*nPlant)].nombre);
-
         (*nPlant)++;
 
     }
 }
 
 
-void eliminarPlantilla(futPlantilla **futPlantillas, plantilla **userPlantillas, int *nFutP, int *nPlantUser) {
+void eliminarPlantilla(futPlantilla **futPlantillas, plantilla **plantillas, int *userPlantilla, int *nFutP,
+                       int *nPlantUser) {
 
     puts("Seleccione la plantilla que desea eliminar:\n");
     int input;
     char deleted[3] = "\0";
 
     for (int i = 0; i < (*nPlantUser); ++i) {
-        printf("[%d] %s-%s-%d-%d\n", i, (*userPlantillas)[i].idPlantilla,(*userPlantillas)[i].nombre,
-               (*userPlantillas)[i].presupuesto,(*userPlantillas)[i].puntuacion);
+        printf("[%d] %s-%s-%d-%d\n", i, (*plantillas)[userPlantilla[i]].idPlantilla,
+               (*plantillas)[userPlantilla[i]].nombre,
+               (*plantillas)[userPlantilla[i]].presupuesto,
+               (*plantillas)[userPlantilla[i]].puntuacion);
     }
     scanf("%d", &input);
 
     for (int i = 0; i < (*nFutP); ++i) {
 
-        if (strcmp((*futPlantillas)[i].idPlantilla, (*userPlantillas)[input].idPlantilla) == 0) {
+        if (strcmp((*futPlantillas)[i].idPlantilla, (*plantillas)[userPlantilla[input]].idPlantilla) == 0) {
             strcpy((*futPlantillas)[i].idPlantilla, "\0");
         }
     }
-    strcpy((*userPlantillas)[input].idUsuario, deleted);
+    strcpy((*plantillas)[userPlantilla[input]].idUsuario, deleted);
 }
 
+int searchDeletedPlant(plantilla **arrayPlantilla, int *nPlantilla, int *index) {
+
+    for (int i = 0; i < (*nPlantilla); ++i) {
+
+        if(strcmp((*arrayPlantilla)[i].idUsuario, "\0") == 0){
+
+            (*index) = i;
+            return 1;
+        }
+    }
+    return 0;
+}
 
 //TODO: Check config number for maxPlayer in plantilla
 
-void menuConfigurar(plantilla **userPlantillas, plantilla **plantillas, futPlantilla **futPlantillas, futbolista **futbolistas,
-               equipo **equipos, config** config, int *nPlantUser, int *nFutP, int *nFutbolistas, int *nEquipos) {
+void menuConfigurar(int *userPlantillas, plantilla **plantillas, futPlantilla **futPlantillas, futbolista **futbolistas,
+                    equipo **equipos, config** config, int *nPlantUser, int *nFutP, int *nFutbolistas, int *nEquipos) {
 
     int input = 0;
 
@@ -234,7 +250,8 @@ void menuConfigurar(plantilla **userPlantillas, plantilla **plantillas, futPlant
     futbolista* futDisponibles = malloc(99 * sizeof(futbolista));
 
     char* idPlantilla = malloc(3* sizeof(char));
-    int nUserFutP = selectPlantilla(&userFutPlant, futPlantillas, userPlantillas, &playerData, futbolistas, nFutP, idPlantilla);
+    int nUserFutP = selectPlantilla(&userFutPlant, futPlantillas, userPlantillas, &playerData, futbolistas, nFutP,
+                                    idPlantilla, plantillas);
     int nDisponibles = loadDisponibles(futbolistas, &futDisponibles, &userFutPlant, nFutbolistas, &nUserFutP);
 
     while (input != 5) {
@@ -294,14 +311,14 @@ void deleteJugadores(futPlantilla* userFutP[], futbolista* playerData[], futboli
     puts("Por favor, seleccione el jugador a eliminar de la plantilla");
 
     for (int i = 0; i < (*nUserFutP); ++i) {
-        printf("%d %s-%s", i, (*userFutP)[i].idFutbolista, (*playerData)[i].nombre);
+        printf("[%d] %s-%s\n", i, (*userFutP)[i].idFutbolista, (*playerData)[i].nombre);
     }
 
     int input = 0;
 
     scanf("%d", &input);
     while (input >= (*nDisponibles)){
-        puts("Por favor, introduzca un identificador de jugador válido (Formato de ejemplo: 2");
+        puts("Por favor, introduzca un identificador de jugador válido (Formato de ejemplo: 2\n");
         scanf("%d", &input);
     }
 
@@ -363,8 +380,9 @@ void listPlantilla(futPlantilla** futbolistasP, int* nFutPlant, futbolista** pla
     }
 }
 
-int selectPlantilla(futPlantilla *localFutPlant[], futPlantilla **arrayFutPlantillas, plantilla **userPlantillas,
-                    futbolista *playerData[], futbolista **futbolistas, int *nFutP, char* plantID) {
+int selectPlantilla(futPlantilla *localFutPlant[], futPlantilla **arrayFutPlantillas, int *userPlantillas,
+                    futbolista *playerData[], futbolista **futbolistas, int *nFutP, char *plantID,
+                    plantilla **arrayPlantillas) {
     int input;
     int nFutPlant = 0;
 
@@ -376,7 +394,7 @@ int selectPlantilla(futPlantilla *localFutPlant[], futPlantilla **arrayFutPlanti
         scanf("%d", &input);
     }
     for (int i = 0; i < (*nFutP); ++i) {
-        if(!strcmp((*arrayFutPlantillas)[i].idPlantilla, (*userPlantillas)[input].idPlantilla)){
+        if(strcmp((*arrayFutPlantillas)[i].idPlantilla, (*arrayPlantillas)[userPlantillas[input]].idPlantilla) == 0){
             (*localFutPlant)[nFutPlant] = (*arrayFutPlantillas)[i];
 
             nFutPlant++;
@@ -393,7 +411,7 @@ int selectPlantilla(futPlantilla *localFutPlant[], futPlantilla **arrayFutPlanti
 
         } while (strcmp((*localFutPlant)[j].idFutbolista, (*futbolistas)[counter-1].idFutbolista) != 0);
     }
-    strcpy(plantID, (*userPlantillas)[input].idPlantilla);
+    strcpy(plantID, (*arrayPlantillas)[userPlantillas[input]].idPlantilla);
     return nFutPlant;
 }
 
@@ -434,15 +452,5 @@ void addJugadores(futPlantilla **arrayFutP, futPlantilla **userFutP, futbolista 
     while(input2 == 0);
 }
 
-int searchDeletedPlant(plantilla **arrayPlantilla, int *nPlantilla, int *index) {
 
-    for (int i = 0; i < (*nPlantilla); ++i) {
-        if(strcmp((*arrayPlantilla)[i].idUsuario, "\n") == 0){
-
-            (*index) = i;
-            return 1;
-        }
-    }
-    return 0;
-}
 

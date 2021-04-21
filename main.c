@@ -37,7 +37,7 @@ int main() {
     savePlantillas(&arrayPlantilla,nPlantilla);
     //saveFutbolistas(&arrayFutbolista, nFutbolista);
     //saveConfig(&arrayConfig, nConfig);
-    //saveUsuarios(&arrayUsuario, nUsuario);
+    saveUsuarios(&arrayUsuario, nUsuario);
     //saveEquipos(&arrayEquipo, nEquipo);
     saveFutP(&arrayFutP, nFutP);
 
