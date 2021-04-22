@@ -83,8 +83,21 @@ int pot(int, int);
 
 
 //Cabecera: void m_equipo(int* n_eq, int* n_jug, int n_fpl, equipo** eq, futbolista** jug, futPlantilla** fpl, config** con)
-//Precondición: n_eq, n_jug y n_fpl son el tamaño de los respectivos vectores de registros eq, jug y fpl, correspondientes a los equipos, jugadores y la relación
-//              entre futbolistas y las plantillas. con es el vector de registros de configuración.
+//Precondición:
+/*
+  Variables:
+  ----------
+  n_eq: número de equipos en la aplicación
+  n_jug: número de futbolistas en la aplicación
+  n_fpl: número de relaciones futbolista-plantilla en la aplicación
+
+  Vector de estructuras:
+  ----------------------
+  eq: equipos
+  jug: futbolistas
+  fpl: relaciones futbolistas-plantillas
+  con: campos de configuración
+*/
 //Postcondición: Muestra la interfaz de gestión de equipos. Permite Listar los equipos y modificar, crear o eliminar jugadores.
 void m_equipo(int* n_eq, int* n_jug, int n_fpl, equipo** eq, futbolista** jug, futPlantilla** fpl, config** con)
 {
@@ -130,8 +143,27 @@ void m_equipo(int* n_eq, int* n_jug, int n_fpl, equipo** eq, futbolista** jug, f
 
 //Cabecera: void m_usuario(int idp, int* n_eq, int* n_jug, int* n_us, int* n_pl, int* n_fpl, int n_con, equipo** eq, futbolista** jug, usuario** us,
 //                          plantilla** pl, futPlantilla** fpl, config** con)
-//Precondición: idp es la id del usuario actual. n_eq, n_juf, n_us, n_pl, n_fpl y n_con son los tamaños de sus respectivos vectores de registros.
-//              eq, jug, us, pl, fpl y con los vectores de registros.
+//Precondición:
+/*
+  Variables:
+  ----------
+  idp: identificador del usuario actual
+  n_eq: número de equipos en la aplicación
+  n_jug: número de futbolistas en la aplicación
+  n_us: número de usuarios en la aplicación
+  n_pl: número de plantillas en la aplicación
+  n_fpl: número de relaciones futbolista-plantilla en la aplicación
+  n_con: número de campos de configuración de la aplicación
+
+  Vector de estructuras:
+  ----------------------
+  eq: equipos
+  jug: futbolistas
+  us: usuarios
+  pl: plantillas
+  fpl: relaciones futbolistas-plantillas
+  con: campos de configuración
+*/
 //Postcondición: Muestra la interfaz de gestión de usuarios. Permite listar, modificar, crear y eliminar usuarios.
 
 void m_usuario(int idp, int* n_eq, int* n_jug, int* n_us, int* n_pl, int* n_fpl, int n_con, equipo** eq, futbolista** jug, usuario** us,
@@ -264,7 +296,16 @@ void m_usuario(int idp, int* n_eq, int* n_jug, int* n_us, int* n_pl, int* n_fpl,
 }
 
 //Cabecera: void m_config(int n_con, config** con)
-//Precondición: n_con es el tamaño del vector de registros con, correspondiente a la configuración.
+//Precondición:
+/*
+  Variables:
+  ----------
+  n_con: número de campos de configuración de la aplicación
+
+  Vector de estructuras:
+  ----------------------
+  con: campos de configuración
+*/
 //Postcondición: Muestra la interfaz de configuración de la aplicación. Permite ver y modificar la configuración.
 
 void m_config(int n_con, config** con)
@@ -304,10 +345,29 @@ void m_config(int n_con, config** con)
     system("cls");
 }
 
-//Cabecera: void m_admin(int idp, int* n_eq, int* n_jug, int* n_us, int* n_pl, int* n_fpl, int n_con, equipo** eq, futbolista** jug, usuario** us,         //INICIO DE ADMIN
+//Cabecera: void m_admin(int idp, int* n_eq, int* n_jug, int* n_us, int* n_pl, int* n_fpl, int n_con, equipo** eq, futbolista** jug, usuario** us,
 //                       plantilla** pl, futPlantilla** fpl, config** con))
-//Precondición: idp es la id del usuario actual. n_eq, n_juf, n_us, n_pl, n_fpl y n_con son los tamaños de sus respectivos vectores de registros.
-//              eq, jug, us, pl, fpl y con los vectores de registros.
+//Precondición:
+/*
+  Variables:
+  ----------
+  idp: identificador del usuario actual
+  n_eq: número de equipos en la aplicación
+  n_jug: número de futbolistas en la aplicación
+  n_us: número de usuarios en la aplicación
+  n_pl: número de plantillas en la aplicación
+  n_fpl: número de relaciones futbolista-plantilla en la aplicación
+  n_con: número de campos de configuración de la aplicación
+
+  Vector de estructuras:
+  ----------------------
+  eq: equipos
+  jug: futbolistas
+  us: usuarios
+  pl: plantillas
+  fpl: relaciones futbolistas-plantillas
+  con: campos de configuración
+*/
 //Postcondición: Muestra las opciones de trabajo del administrador. Permite "desplazarse" a los submenús de gestión de equipos, usuarios y configuración.
 
 void m_admin(int idp, int* n_eq, int* n_jug, int* n_us, int* n_pl, int* n_fpl, int n_con, equipo** eq, futbolista** jug, usuario** us,         //INICIO DE ADMIN
@@ -394,7 +454,16 @@ void m_admin(int idp, int* n_eq, int* n_jug, int* n_us, int* n_pl, int* n_fpl, i
 //--------------------
 
 //Cabecera: void listar_eq(int n_eq, equipo** eq)
-//Precondición: n_eq es el tamaño del vector de registros eq, correspondiente a los equipos.
+//Precondición:
+/*
+  Variables:
+  ----------
+  n_eq: número de equipos en la aplicación
+
+  Vector de estructuras:
+  ----------------------
+  eq: equipos
+*/
 //Postcondición: Muestra listados todos los equipos
 
 void listar_eq(int n_eq, equipo** eq)
@@ -407,13 +476,13 @@ void listar_eq(int n_eq, equipo** eq)
     for(int id = 0; id < pot(10, sizeof((*eq)[0].idEquipo) - 1); id++)
     {
         n0 = 0;
+
         for(int i = 0; ((i == 0 && n_eq == 0) || i < n_eq) && n0 == 0; i++)
         {
             if(n_eq != 0)
             {
                 if(toint((*eq)[i].idEquipo) == id && (*eq)[i].idEquipo[0] != '\0')
                 {
-                    printf("\n=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=\n");
                     printf("\n Equipo:\n =======\n ID: %s\n Nombre: %s\n", (*eq)[i].idEquipo, (*eq)[i].nombreEquipo);
                     n = 1;
                     n0 = 1;
@@ -431,7 +500,18 @@ void listar_eq(int n_eq, equipo** eq)
 }
 
 //Cabecera: void listar_jug(int n_eq, int n_jug, equipo** eq, futbolista** jug)
-//Precondición: n_eq y n_jug son el tamaño del vector de registros eq y jug, correspondiente a los equipos y jugadores.
+//Precondición:
+/*
+  Variables:
+  ----------
+  n_eq: número de equipos en la aplicación
+  n_jug: número de futbolistas en la aplicación
+
+  Vector de estructuras:
+  ----------------------
+  eq: equipos
+  jug: futbolistas
+*/
 //Postcondición: Muestra listados todos los jugadores.
 
 void listar_jug(int n_eq, int n_jug, equipo** eq, futbolista** jug)
@@ -458,7 +538,6 @@ void listar_jug(int n_eq, int n_jug, equipo** eq, futbolista** jug)
                             n0 = 1;
                         }
                     }
-                    printf("\n=======================\n");
                     printf("\n ID: %s\n Nombre: %s\n Equipo: %s\n Precio: %d\n Nota: %d\n", (*jug)[i].idFutbolista, (*jug)[i].nombre,
                            (*eq)[ideq].nombreEquipo, (*jug)[i].precio, (*jug)[i].puntuacion);
                     n = 1;
@@ -477,7 +556,16 @@ void listar_jug(int n_eq, int n_jug, equipo** eq, futbolista** jug)
 }
 
 //Cabecera: void listar_us(int n_us, usuario** us)
-//Precondición: n_us es el tamaño del vector de registros us, correspondiente a los usuarios.
+//Precondición:
+/*
+  Variables:
+  ----------
+  n_us: número de usuarios en la aplicación
+
+  Vector de estructuras:
+  ----------------------
+  us: usuarios
+*/
 //Postcondición: Muestra listados todos los usuarios.
 
 void listar_us(int n_us, usuario** us)
@@ -516,7 +604,16 @@ void listar_us(int n_us, usuario** us)
 }
 
 //Cabecera: void listar_con(int n_con, config** con)
-//Precondición: n_con es el tamaño del vector de registros con, correspondiente a la configuración.
+//Precondición:
+/*
+  Variables:
+  ----------
+  n_con: número de campos de configuración de la aplicación
+
+  Vector de estructuras:
+  ----------------------
+  con: campos de configuración
+*/
 //Postcondición: Muestra la configuración actual.
 
 void listar_con(int n_con, config** con)
@@ -538,8 +635,20 @@ void listar_con(int n_con, config** con)
 //-------------------
 
 //Cabecera: void mod_eq(int* n_eq, int n_jug, int n_fpl, equipo** eq, futbolista** jug, futPlantilla** fpl)
-//Precondición: n_eq, n_jug y n_fpl son el tamaño de los respectivos vectores de registros eq, jug y fpl, correspondientes a los equipos, jugadores y la relación
-//              entre futbolistas y las plantillas.
+//Precondición:
+/*
+  Variables:
+  ----------
+  n_eq: número de equipos en la aplicación
+  n_jug: número de futbolistas en la aplicación
+  n_fpl: número de relaciones futbolista-plantilla en la aplicación
+
+  Vector de estructuras:
+  ----------------------
+  eq: equipos
+  jug: futbolistas
+  fpl: relaciones futbolistas-plantillas
+*/
 //Postcondición: Permite modificar las carácterísticas de cada equipo (nombre)
 
 void mod_eq(int* n_eq, int n_jug, int n_fpl, equipo** eq, futbolista** jug, futPlantilla** fpl)
@@ -660,9 +769,22 @@ void mod_eq(int* n_eq, int n_jug, int n_fpl, equipo** eq, futbolista** jug, futP
     system("cls");
 }
 
-//Cabecera: void mod_jug(int idp, int n_eq, int* n_jug, int n_fpl, equipo** eq, futbolista** jug, futPlantilla** fpl, config** con)
-//Precondición: idp es la id del usuario actual. n_eq, n_jug y n_fpl son el tamaño de los respectivos vectores de registros eq, jug y fpl, correspondientes a los equipos, jugadores y la relación
-//              entre futbolistas y las plantillas. con es el vector de registros de configuración.
+//Cabecera: void mod_jug(int n_eq, int* n_jug, int n_fpl, equipo** eq, futbolista** jug, futPlantilla** fpl, config** con)
+//Precondición:
+/*
+  Variables:
+  ----------
+  n_eq: número de equipos en la aplicación
+  n_jug: número de futbolistas en la aplicación
+  n_fpl: número de relaciones futbolista-plantilla en la aplicación
+
+  Vector de estructuras:
+  ----------------------
+  eq: equipos
+  jug: futbolistas
+  fpl: relaciones futbolistas-plantillas
+  con: campos de configuración
+*/
 //Postcondición: Permite modificar las carácterísticas de cada jugador (nombre, precio, equipo al que pertenece).
 
 void mod_jug(int n_eq, int* n_jug, int n_fpl, equipo** eq, futbolista** jug, futPlantilla** fpl, config** con)
@@ -916,8 +1038,18 @@ void mod_jug(int n_eq, int* n_jug, int n_fpl, equipo** eq, futbolista** jug, fut
     system("cls");
 }
 
-//Cabecera: void mod_us(int n_us, usuario** us)
-//Precondición: n_us es el tamaño del vector de registros us, correspondientes a los usuarios.
+//Cabecera: void mod_us(int idp, int n_us, usuario** us)
+//Precondición:
+/*
+  Variables:
+  ----------
+  idp: identificador del usuario actual
+  n_us: número de usuarios en la aplicación
+
+  Vector de estructuras:
+  ----------------------
+  us: usuarios
+*/
 //Postcondición: Permite modificar las carácterísticas de cada usuario (permisos, contraseña, nombre).
 
 void mod_us(int idp, int n_us, usuario** us)
@@ -1135,7 +1267,16 @@ void mod_us(int idp, int n_us, usuario** us)
 }
 
 //Cabecera: void mod_con(int n_con, config** con)
-//Precondición: n_con es el tamaño del vector de registros con, correspondiente a la configuración.
+//Precondición:
+/*
+  Variables:
+  ----------
+  n_con: número de campos de configuración de la aplicación
+
+  Vector de estructuras:
+  ----------------------
+  con: campos de configuración
+*/
 //Postcondición: Permite modificar la configuración del programa.
 
 void mod_con(int n_con, config** con)
@@ -1189,8 +1330,20 @@ void mod_con(int n_con, config** con)
 //------------------------
 
 //Cabecera: void eliminar_eq(int n_eq, int n_jug, int n_fpl, equipo** eq, futbolista** jug, futPlantilla** fpl)
-//Precondición: n_eq, n_jug y n_fpl son el tamaño de los respectivos vectores de registros eq, jug y fpl, correspondientes a los equipos,
-//              jugadores y la relación entre futbolistas y las plantillas.
+//Precondición:
+/*
+  Variables:
+  ----------
+  n_eq: número de equipos en la aplicación
+  n_jug: número de futbolistas en la aplicación
+  n_fpl: número de relaciones futbolista-plantilla en la aplicación
+
+  Vector de estructuras:
+  ----------------------
+  eq: equipos
+  jug: futbolistas
+  fpl: relaciones futbolistas-plantillas
+*/
 //Postcondición: Permite eliminar un equipo.
 
 void eliminar_eq(int n_eq, int n_jug, int n_fpl, equipo** eq, futbolista** jug, futPlantilla** fpl)
@@ -1263,7 +1416,7 @@ void eliminar_eq(int n_eq, int n_jug, int n_fpl, equipo** eq, futbolista** jug, 
                 {
                     if((*jug)[j].nombre[0] != '\0' && toint((*jug)[j].idEquipo) == toint((*eq)[id].idEquipo) && (*jug)[j].idEquipo[0] != '\0')
                     {
-                        printf("\n=======================\n ID: %s\n Nombre: %s\n Equipo: %s\n Precio: %d\n Nota: %d\n\n=======================",
+                        printf("\n ID: %s\n Nombre: %s\n Equipo: %s\n Precio: %d\n Nota: %d\n",
                                (*jug)[j].idFutbolista, (*jug)[j].nombre, (*eq)[id].nombreEquipo, (*jug)[j].precio, (*jug)[j].puntuacion);
                         n = 1;
                     }
@@ -1310,9 +1463,21 @@ void eliminar_eq(int n_eq, int n_jug, int n_fpl, equipo** eq, futbolista** jug, 
     system("cls");
 }
 
-//Cabecera: void eliminar_jug(int n_jug, int n_fpl, equipo** eq, futbolista** jug, futPlantilla** fpl)
-//Precondición: n_eq, n_jug y n_fpl son el tamaño de los respectivos vectores de registros eq, jug y fpl, correspondientes a los equipos, jugadores y la relación
-//              entre futbolistas y las plantillas.
+//Cabecera: void eliminar_jug(int n_eq, int n_jug, int n_fpl, equipo** eq, futbolista** jug, futPlantilla** fpl)
+//Precondición:
+/*
+  Variables:
+  ----------
+  n_eq: número de equipos en la aplicación
+  n_jug: número de futbolistas en la aplicación
+  n_fpl: número de relaciones futbolista-plantilla en la aplicación
+
+  Vector de estructuras:
+  ----------------------
+  eq: equipos
+  jug: futbolistas
+  fpl: relaciones futbolistas-plantillas
+*/
 //Postcondición: Permite eliminar un jugador.
 
 void eliminar_jug(int n_eq, int n_jug, int n_fpl, equipo** eq, futbolista** jug, futPlantilla** fpl)
@@ -1429,8 +1594,21 @@ void eliminar_jug(int n_eq, int n_jug, int n_fpl, equipo** eq, futbolista** jug,
 }
 
 //Cabecera: void eliminar_us(int idp, int n_us, int n_pl, int n_fpl, usuario** us, plantilla** pl, futPlantilla** fpl)
-//Precondición: idp es la id del usuario activo. n_us, n_pl y n_fpl son el tamaño de los respectivos vectores de registros us, pl y fpl, correspondientes
-//              a los usuarios, las plantillas y la relación entre futbolistas y las plantillas.
+//Precondición:
+/*
+  Variables:
+  ----------
+  idp: identificador del usuario actual
+  n_us: número de usuarios en la aplicación
+  n_pl: número de plantillas en la aplicación
+  n_fpl: número de relaciones futbolista-plantilla en la aplicación
+
+  Vector de estructuras:
+  ----------------------
+  us: usuarios
+  pl: plantillas
+  fpl: relaciones futbolistas-plantillas
+*/
 //Postcondición: Permite eliminar un usuario.
 
 void eliminar_us(int idp, int n_us, int n_pl, int n_fpl, usuario** us, plantilla** pl, futPlantilla** fpl)
@@ -1558,7 +1736,16 @@ void eliminar_us(int idp, int n_us, int n_pl, int n_fpl, usuario** us, plantilla
 //----------------------
 
 //Cabecera: void anadir_eq(int* n_eq, equipo** eq)
-//Precondición: n_eq es el tamaño del vector de registros eq, correspondientes a los equipos.
+//Precondición:
+/*
+  Variables:
+  ----------
+  n_eq: número de equipos en la aplicación
+
+  Vector de estructuras:
+  ----------------------
+  eq: equipos
+*/
 //Postcondición: Permite añadir un equipo.
 
 void anadir_eq(int* n_eq, equipo** eq)
@@ -1646,8 +1833,19 @@ void anadir_eq(int* n_eq, equipo** eq)
 }
 
 //Cabecera: void anadir_jug(int n_eq, int* n_jug, equipo** eq, futbolista** jug, config** con)
-//Precondición: n_eq y n_jug son el tamaño de los respectivos vectores de registros eq y jug, correspondientes a los equipos y jugadores.
-//              con es el vector de registros de configuración.
+//Precondición:
+/*
+  Variables:
+  ----------
+  n_eq: número de equipos en la aplicación
+  n_jug: número de futbolistas en la aplicación
+
+  Vector de estructuras:
+  ----------------------
+  eq: equipos
+  jug: futbolistas
+  con: campos de configuración
+*/
 //Postcondición: Permite añadir un jugador.
 
 void anadir_jug(int n_eq, int* n_jug, equipo** eq, futbolista** jug, config** con)
@@ -1851,8 +2049,17 @@ void anadir_jug(int n_eq, int* n_jug, equipo** eq, futbolista** jug, config** co
 }
 
 //Cabecera: void anadir_us(char c, int* n_us, usuario** us)
-//Precondición: c es el indicador del origen de la llamada (gestión de usuarios o registro de usuarios). n_us es el tamaño del vector de
-//              registros us, correspondientes a los usuarios.
+//Precondición:
+/*
+  Variables:
+  ----------
+  c: indicador del origen de la llamada ('u' ==> gestión de usuarios || 'r' ==> registro)
+  n_us: número de usuarios en la aplicación
+
+  Vector de estructuras:
+  ----------------------
+  us: usuarios
+*/
 //Postcondición: Permite añadir un usuario.
 
 void anadir_us(char c, int* n_us, usuario** us)
@@ -2019,10 +2226,13 @@ void anadir_us(char c, int* n_us, usuario** us)
 //-------------
 
 //Cabecera: void gettot(char* s, int* n, config** con)
-//Precondición: s es la cadena a comparar, n es la variable donde se devolverá el resultado (para la primera vez que sea llamada,
-//              n debe ser el tamaño del vector de registros con), y con el vector de registro donde se buscará la coincidencía
-//              ente s y uno de sus campos.
-//Postcondición: Calcula el número total de registros en un vector de ellos.
+//Precondición:
+/*
+  s: cadena a comparar
+  n: salida de la función (excepto para la primera vez que es llamada, que se corresponderá con el número de campos de configuración)
+  con: vector de estructuras correspondiente a la configuración
+*/
+//Postcondición: Calcula el valor deseado del campo indicado de la configuración.
 
 void gettot(char* s, int* n, config** con)
 {
@@ -2043,7 +2253,10 @@ void gettot(char* s, int* n, config** con)
 }
 
 //Cabecera: int textest(char *c)
-//Precondición: el vector de caracteres será el objeto a comprobar.
+//Precondición:
+/*
+  c: cadena de caracteres a verificar
+*/
 //Postcondición: comprueba si el primer elemento de la cadena es un caracter. Devolverá 0 si es un caracter, 1 si no lo es.
 
 int textest(char* c)
@@ -2057,7 +2270,10 @@ int textest(char* c)
 }
 
 //Cabecera: int intext(char *c)
-//Precondición: el vector de caracteres será el objeto a comprobar.
+//Precondición:
+/*
+  c: cadena de caracteres a verificar
+*/
 //Postcondición: comprueba si el primer elemento de la cadena es un caracter o un número. Devolverá 0 si es un caracter o un número, 1 si no lo es.
 
 int intest(char* c)
@@ -2075,7 +2291,10 @@ int intest(char* c)
 }
 
 //Cabecera: int toint(char *c)
-//Precondición: el vector de caracteres será el objeto a convertir.
+//Precondición:
+/*
+  c: cadena de caracteres a convertir a entero
+*/
 //Postcondición: pasa el vector de caracteres dado a un entero.
 
 int toint(char *c)
@@ -2095,8 +2314,13 @@ int toint(char *c)
 }
 
 //Cabecera: void tostring(int n, int tam, char *c)
-//Precondición: el valor a convertir es n, tam es el tamaño de la cadena donde se almacenrá el resultado y el vector es donde se devolverá el resultado.
-//Postcondición: pasa caracteres a enteros.
+//Precondición:
+/*
+  n: entero que se desea convertir a cadena de caracteres
+  tam: tamaño del vector de caracteres destino
+  c: cadena de caracteres se almacenará el resultado
+*/
+//Postcondición: pasa enteros a caracteres.
 
 void tostring(int n, int tam, char* c)
 {
@@ -2125,7 +2349,11 @@ void tostring(int n, int tam, char* c)
 }
 
 //Cabecera: int pot(int n1, int n2)
-//Precondición: n1 y n2 deben estar inicializados. n1 corresponde a la base y n2 a la potencia
+//Precondición:
+/*
+  n1: base de la potencia
+  n2: potencia a la que elevamos la base
+*/
 //Postcondición: devuelve la potencia de n1 elevada a n2
 
 int pot(int n1, int n2)

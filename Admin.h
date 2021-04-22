@@ -40,16 +40,44 @@ typedef struct futPlantilla {
 //#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#
 
 //Cabecera: void anadir_us(char c, int* n_us, usuario** us)
-//Precondici�n: c es el indicador del origen de la llamada (gesti�n de usuarios o registro de usuarios). n_us es el tama�o del vector de
-//              registros us, correspondientes a los usuarios.
-//Postcondici�n: Permite a�adir un usuario.
+//Precondición:
+/*
+  Variables:
+  ----------
+  idp: identificador del usuario actual
+  n_eq: número de equipos en la aplicación
+  n_jug: número de futbolistas en la aplicación
+  n_us: número de usuarios en la aplicación
+  n_pl: número de plantillas en la aplicación
+  n_fpl: número de relaciones futbolista-plantilla en la aplicación
+  n_con: número de campos de configuración de la aplicación
+
+  Vector de estructuras:
+  ----------------------
+  eq: equipos
+  jug: futbolistas
+  us: usuarios
+  pl: plantillas
+  fpl: relaciones futbolistas-plantillas
+  con: campos de configuración
+*/
+//Postcondición: Permite añadir un usuario.
 
 void anadir_us(char, int*, usuario**);
 
 //Cabecera: void m_admin(int idp, int* n_eq, int* n_jug, int* n_us, int* n_pl, int* n_fpl, int n_con, equipo** eq, futbolista** jug, usuario** us,         //INICIO DE ADMIN
 //                       plantilla** pl, futPlantilla** fpl, config** con))
-//Precondición: idp es la id del usuario actual. n_eq, n_juf, n_us, n_pl, n_fpl y n_con son los tamaños de sus respectivos vectores de registros.
-//              eq, jug, us, pl, fpl y con los vectores de registros.
+//Precondición:
+/*
+  Variables:
+  ----------
+  c: indicador del origen de la llamada ('u' ==> gestión de usuarios || 'r' ==> registro)
+  n_us: número de usuarios en la aplicación
+
+  Vector de estructuras:
+  ----------------------
+  us: usuarios
+*/
 //Postcondición: Muestra las opciones de trabajo del administrador. Permite "desplazarse" a los submenús de gestión de equipos, usuarios y configuración.
 
 void m_admin(int, int*, int*, int*, int*, int*, int, equipo**, futbolista**, usuario**, plantilla**, futPlantilla**, config**);
