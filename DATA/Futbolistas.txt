@@ -9,20 +9,20 @@
 09-02-Inigo Martinez-25-0
 10-02-Unai Simon-30-0
 11-03-Suarez-15-0
-12-03-Joao Felix-100-0
-13-03-Marcos Llorente-50-0
+12-03-Joao Felix-10-0
+13-03-Marcos Llorente-15-0
 14-03-Trippier-20-0
-15-03-Oblak-90-0
-16-04-Messi-80-0
-17-04-Ansu Fati-80-0
-18-04-Frenkie de Jong-65-0
-19-04-Pedri-50-0
+15-03-Oblak-14-0
+16-04-Messi-18-0
+17-04-Ansu Fati-24-0
+18-04-Frenkie de Jong-15-0
+19-04-Pedri-6-0
 20-04-Ronald Araujo-20-0
 21-04-Pique-12-0
-22-04-Ter Stegen-75-0
+22-04-Ter Stegen-30-0
 23-05-Borja Iglesias-7-0
-24-05-Fekir-25-0
-25-05-Canales-20-0
+24-05-Fekir-11-0
+25-05-Canales-8-0
 26-05-Emerson-20-0
 27-05-Joel Robles-4-0
 28-06-Negredo-1-2
@@ -58,7 +58,7 @@
 58-12-Javi Galan-3-5
 59-12-Alvaro Fernandez-3-0
 60-13-Roger-8-0
-61-13-Campana-22-0
+61-13-Campana-14-0
 62-13-Bardhi-18-0
 63-13-Clerc-2-0
 64-13-Aitor Fernandez-8-0
@@ -67,13 +67,13 @@
 67-14-Moncayola-3-0
 68-14-Nacho Vidal-2-0
 69-14-Sergio Herrera-1-8
-70-15-Hazard-50-0
+70-15-Hazard-21-0
 71-15-Lucas Vazquez-15-0
-72-15-Varane-70-0
+72-15-Varane-50-0
 73-15-Sergio Ramos-14-0
-74-15-Courtois-75-0
-75-16-Oyarzabal-70-0
-76-16-Mikel Merino-40-0
+74-15-Courtois-48-0
+75-16-Oyarzabal-43-0
+76-16-Mikel Merino-28-0
 77-16-Gorosabel-10-0
 78-16-Le Normand-20-0
 79-16-Remiro-20-0
@@ -82,10 +82,10 @@
 82-17-Roque Mesa-3-0
 83-17-Olaza-6-0
 84-17-Masip-2-8
-85-18-Ocampos-45-0
+85-18-Ocampos-31-0
 86-18-Papu Gomez-15-0
-87-18-Kounde-50-0
-88-18-Diego Carlos-50-0
+87-18-Kounde-24-0
+88-18-Diego Carlos-13-0
 89-18-Bono-15-0
 90-19-Maxi Gomez-32-0
 91-19-Carlos Soler-35-0
