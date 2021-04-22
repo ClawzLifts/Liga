@@ -574,6 +574,15 @@ int selectPlantilla(futPlantilla *localFutPlant[], futPlantilla **arrayFutPlanti
     return nFutPlant;
 }
 
+/// Compara los futbolistas en arrayFut con los encontrados por selectPlantilla, creando un vector auxiliar
+/// que contiene los Futbolistas que pueden ser añadidos a la plantilla.
+/// \param arrayFut - Array de estructuras Futbolista.
+/// \param disponibles - Vector auxiliar a inicializar que contendrá los Futbolistas disponibles para asignar a plantilla.
+/// \param userFutPlant - Vector auxiliar que contiene las estructuras futPlantilla asignadas a la plantilla.
+/// \param nFutbolistas - Tamaño de arrayFut
+/// \param nUserFutP - Tamaño de userFutPlant
+/// \return Devuelve el tamaño de disponibles.
+
 int loadDisponibles(futbolista **arrayFut, futbolista **disponibles, futPlantilla **userFutPlant, int *nFutbolistas, int *nUserFutP){
     int counter = 0;
     int temp = 0;
@@ -595,20 +604,23 @@ int loadDisponibles(futbolista **arrayFut, futbolista **disponibles, futPlantill
     return counter;
 }
 
+/// Reimplementación del conocido algoritmo de ordenación bubbleSort adaptado al contexto del programa.
+/// \param arrayPlantilla - Vector que contiene las estructuras Plantilla del programa.
+/// \param nPlantillas  - Tamaño de arrayPlantilla.
 void ranking(plantilla** arrayPlantilla, int* nPlantillas){
 
     int indexArray[(*nPlantillas)][2];
 
     for (int i = 0; i < (*nPlantillas); ++i) {
 
-        indexArray[i][0] = (*arrayPlantilla)[i].puntuacion;
+        indexArray[i][0] = (*arrayPlantilla)[i].puntuacion; //Crea un array bidimensional de puntuación - índice de las plantillas.
         indexArray[i][1] = i;
     }
 
-    bubbleSort(indexArray, (*nPlantillas));
+    bubbleSort(indexArray, (*nPlantillas)); //Llama a bubblesort sobre el array bidimensional para ser ordenado.
 
     for (int i = 0; i < (*nPlantillas); ++i) {
-        printf("[%d] %s - %s\n", (*arrayPlantilla)[indexArray[i][1]].puntuacion, (*arrayPlantilla)[indexArray[i][1]].idPlantilla, (*arrayPlantilla)[indexArray[i][1]].nombre);
+        printf("[%d] %s - %s\n", (*arrayPlantilla)[indexArray[i][1]].puntuacion, (*arrayPlantilla)[indexArray[i][1]].idPlantilla, (*arrayPlantilla)[indexArray[i][1]].nombre); //Imprime las puntuaciones, nombres e identificadores de las plantillas una vez ordenados.
     }
 
 }
