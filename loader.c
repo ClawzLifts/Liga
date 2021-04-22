@@ -20,7 +20,9 @@ equipo createStructEquipos(char**);
 plantilla createStructPlantilla(char**);
 
 
-
+/// Carga los datos en el fichero Futbolistas_Plantillas.txt en un array de estructuras futPlantilla.
+/// \param dynArray - Vector de punteros a estructuras futPlantilla a ser cargado.
+/// \param n - Puntero a entero que recibe el número de estructuras cargadas en el array.
 void loadFutPlantillas(futPlantilla **dynArray, int* n ) {
 
     FILE *file;
@@ -52,7 +54,7 @@ void loadFutPlantillas(futPlantilla **dynArray, int* n ) {
 
 }
 
-
+//Referimos al comentario de loadFutPlantillas() para todos los loadXXX(), ya que el comportamiento es equivalente.
 void loadConfig(config **dynArray, int *n) {
 
     FILE *file;
@@ -211,7 +213,10 @@ void loadPlantilla(plantilla **dynArray, int * n) {
 
 }
 
-
+/// Recibe una string leida del fichero, la separa en tokens delimitados por '-' o '\n', y
+/// devuelve por parámetro un array con los campos a ser utilizados para crear las estructuras.
+/// \param string - String a tokenizar
+/// \param fields - Parametro de salida por el que se otorga el valor a los campos.
 void stringSplit(char *string, char **fields) {
 
     int counter = 0;
@@ -224,7 +229,9 @@ void stringSplit(char *string, char **fields) {
 
 }
 
-
+/// Crea la estructura correspondiente, inicializando los campos mediante los valores contenidos en array[].
+/// \param array - Contingente de los valores de los campos de la estructura.
+/// \return La estructura inicializada para ser asignada a una posición del vector.
 futbolista  createStructJugadores(char* array[]){
     futbolista newStruct;
 
@@ -238,7 +245,7 @@ futbolista  createStructJugadores(char* array[]){
 
 }
 
-
+//Para todas las funciones createStructXXX(), referimos al comentario de createStructXXX() ya que poseen un comportamiento equivalente.
 plantilla createStructPlantilla(char* array[]){
     plantilla newStruct;
 
@@ -295,7 +302,11 @@ equipo createStructEquipos(char* array[]) {
     return newStruct;
 }
 
-
+/// Recorre el vector de estructuras pasado por parámetro, y escribe en un fichero
+/// los valores de los campos en el formato:
+/// campo1-campo2-campo3-campo4...
+/// \param arrayConfig - Array a ser recorrido
+/// \param nConfig - Tamaño del array
 void saveConfig(config** arrayConfig, int nConfig){
     FILE* file;
     file = fopen("DATA/Configuracion.txt", "w");
@@ -318,6 +329,7 @@ void saveConfig(config** arrayConfig, int nConfig){
     }
 }
 
+//Para todas las funciones saveXXX(), referimos al comentario de saveConfig() ya que poseen un comportamiento equivalente.
 void saveEquipos(equipo** arrayEquipos, int nEquipos){
     FILE* file;
     file = fopen("DATA/Equipos.txt", "w");
