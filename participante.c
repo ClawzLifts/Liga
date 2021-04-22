@@ -490,9 +490,10 @@ void ranking(plantilla** arrayPlantilla, int* nPlantillas){
 
         indexArray[i][0] = (*arrayPlantilla)[i].puntuacion;
         indexArray[i][1] = i;
-
-        bubbleSort(indexArray, (*nPlantillas));
     }
+
+    bubbleSort(indexArray, (*nPlantillas));
+
     for (int i = 0; i < (*nPlantillas); ++i) {
         printf("[%d] %s - %s\n", (*arrayPlantilla)[indexArray[i][1]].puntuacion, (*arrayPlantilla)[indexArray[i][1]].idPlantilla, (*arrayPlantilla)[indexArray[i][1]].nombre);
     }
@@ -501,11 +502,12 @@ void ranking(plantilla** arrayPlantilla, int* nPlantillas){
 
 void bubbleSort(int arr[][2], int n) {
     int i, j;
+    printf("%d\n", n);
     for (i = 0; i < n - 1; i++) {
 
         for (j = 0; j < n - i - 1; j++) {
 
-            if (arr[j] > arr[j + 1]) {
+            if (arr[j][0] < arr[j + 1][0]) {
                 swap(&arr[j][0], &arr[j + 1][0], &arr[j][1], &arr[j + 1][1]);
             }
         }
@@ -522,6 +524,6 @@ void swap(int *valueA, int *valueB, int *indexA, int *indexB)
     *valueA = *valueB;
     *valueB = temp;
 
-    *indexA = *valueB;
+    *indexA = *indexB;
     *indexB = temp2;
 }

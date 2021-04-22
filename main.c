@@ -35,10 +35,10 @@ int main() {
              &arrayUsuario, &arrayPlantilla, &arrayFutP, &arrayConfig);
 
     savePlantillas(&arrayPlantilla,nPlantilla);
-    //saveFutbolistas(&arrayFutbolista, nFutbolista);
-    //saveConfig(&arrayConfig, nConfig);
+    saveFutbolistas(&arrayFutbolista, nFutbolista);
+    saveConfig(&arrayConfig, nConfig);
     saveUsuarios(&arrayUsuario, nUsuario);
-    //saveEquipos(&arrayEquipo, nEquipo);
+    saveEquipos(&arrayEquipo, nEquipo);
     saveFutP(&arrayFutP, nFutP);
 
 
