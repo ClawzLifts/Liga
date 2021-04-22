@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "Cronista.h"
-#include "Admin.h"
-#include "participante.h"
-#include "Login_res.h"
+#include "Headers/Cronista.h"
+#include "Headers/Admin.h"
+#include "Headers/participante.h"
+#include "Headers/Login_res.h"
 
 
 //#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#
@@ -145,7 +145,7 @@ void login(int* n_eq, int* n_jug, int* n_us, int* n_pl, int* n_fpl, int n_con, e
                 else if(strcmp((*us)[i].perfil, "Cronista") == 0)
                     cronista(n_eq, eq, n_jug, jug);
                 else if(strcmp((*us)[i].perfil, "Participante") == 0) {
-                    menuParticipante((*us)[i].idUser, (*us)[i].nombre, con, jug, eq, pl, fpl, n_pl, n_jug, n_eq, n_fpl);
+                    menuParticipante((*us)[i].idUser, con, jug, eq, pl, fpl, n_pl, n_jug, n_eq, n_fpl);
                 }
                 else
                 {

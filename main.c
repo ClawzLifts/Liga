@@ -2,11 +2,11 @@
 // Created by Clawz on 06/04/2021.
 //
 #include <stdlib.h>
-#include "Cronista.h"
-#include "Admin.h"
-#include "loader.h"
-#include "participante.h"
-#include "Login_res.h"
+#include "Headers/Cronista.h"
+#include "Headers/Admin.h"
+#include "Headers/loader.h"
+#include "Headers/participante.h"
+#include "Headers/Login_res.h"
 
 
 

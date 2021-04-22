@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.17)
 project(Liga)
 
 set(CMAKE_CXX_STANDARD 14)
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libstdc++ -static-libgcc")
+
+
 
 include_directories(.)
 
@@ -13,14 +16,14 @@ add_executable(Liga
         DATA/Futbolistas.txt
 
         participante.c
-        participante.h
+        Headers/participante.h
         main.c
         loader.c
-        loader.h
+        Headers/loader.h
         Admin.c
-        Admin.h
+        Headers/Admin.h
         Cronista.c
-        Cronista.h
+        Headers/Cronista.h
         Login_res.c
-        Login_res.h
+        Headers/Login_res.h
         )

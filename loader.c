@@ -5,9 +5,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "Cronista.h"
-#include "Admin.h"
-#include "loader.h"
+#include "Headers/Cronista.h"
+#include "Headers/Admin.h"
+#include "Headers/loader.h"
 
 
 

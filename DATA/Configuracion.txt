@@ -1,2 +1,4 @@
-maxUser-3
+maxPlantillas-3
+presupInicial-90
+puntInicial-0
 presu_base-100

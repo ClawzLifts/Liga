@@ -4,10 +4,10 @@
 #include <string.h>
 #include <math.h>
 
-#include "Cronista.h"
-#include "Admin.h"
-#include "loader.h"
-#include "participante.h"
+#include "Headers/Cronista.h"
+#include "Headers/Admin.h"
+#include "Headers/loader.h"
+#include "Headers/participante.h"
 
 
 
@@ -281,7 +281,7 @@ void m_usuario(int idp, int* n_eq, int* n_jug, int* n_us, int* n_pl, int* n_fpl,
                            "=======================================================\n");
                     system("pause");
                 } else
-                    menuParticipante((*us)[id].idUser, (*us)[id].nombre, con, jug, eq, pl, fpl, n_pl, n_jug, n_eq, n_fpl);
+                    menuParticipante((*us)[id].idUser, con, jug, eq, pl, fpl, n_pl, n_jug, n_eq, n_fpl);
             }
             system("cls");
             break;
