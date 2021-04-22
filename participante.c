@@ -523,5 +523,5 @@ void swap(int *valueA, int *valueB, int *indexA, int *indexB)
     *valueB = temp;
 
     *indexA = *valueB;
-    *indexB = temp;
+    *indexB = temp2;
 }
